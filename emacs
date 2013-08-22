@@ -15,9 +15,17 @@
   (interactive)
   (let ((inhibit-read-only t))
     (erase-buffer))
-    ;; figure out how to insert a new line
 )
 
+;; spaces 4-ever
+(setq-default indent-tabs-mode nil)
+
+;; show date and time
+(setq display-time-day-and-date t)
 (display-time)
+
+;; hide menu bar
+(menu-bar-mode -1)
+
 (eshell)
 
