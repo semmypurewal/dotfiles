@@ -27,5 +27,8 @@
 ;; hide menu bar
 (menu-bar-mode -1)
 
+;; ido mode on
+(ido-mode t)
+
 (eshell)
 
