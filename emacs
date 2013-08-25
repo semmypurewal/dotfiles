@@ -4,12 +4,6 @@
 (let ((default-directory "~/.emacs.d/lib/"))
   (normal-top-level-add-subdirs-to-load-path))
 
-;;(require 'git)
-;;(require 'git-blame)
-
-;;(load-library "git")
-;;(load-library "git-blame")
-
 (require 'p4)
 (require 'p4v)
 (require 'js2-mode)
