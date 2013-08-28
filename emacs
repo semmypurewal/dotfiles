@@ -8,6 +8,7 @@
 (require 'p4v)
 (require 'js2-mode)
 (require 'git)
+(require 'transpose-frame)
 
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
