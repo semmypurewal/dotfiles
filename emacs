@@ -10,6 +10,11 @@
 (require 'git)
 (require 'transpose-frame)
 
+;; some simple keybindings
+(global-set-key (kbd "C-x )") 'rotate-frame-clockwise)
+(global-set-key (kbd "C-x (") 'rotate-frame-anticlockwise)
+
+
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
 ;; clear the buffer in eshell
