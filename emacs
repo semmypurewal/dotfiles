@@ -15,6 +15,9 @@
 (global-set-key (kbd "C-x )") 'rotate-frame-clockwise)
 (global-set-key (kbd "C-x (") 'rotate-frame-anticlockwise)
 
+;; turn off some annoying 'features'
+(setq inhibit-startup-message t)
+(setq backup-directory-alist '(("." . "~/.emacs-backups")))
 
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
