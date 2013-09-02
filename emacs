@@ -11,6 +11,7 @@
 (require 'transpose-frame)
 
 ;; some simple keybindings
+(global-set-key (kbd "M-g")   'goto-line)
 (global-set-key (kbd "C-x )") 'rotate-frame-clockwise)
 (global-set-key (kbd "C-x (") 'rotate-frame-anticlockwise)
 
