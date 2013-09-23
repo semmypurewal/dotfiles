@@ -9,6 +9,7 @@
 (require 'js2-mode)
 (require 'git)
 (require 'transpose-frame)
+(require 'json)
 
 ;; some simple keybindings
 (global-set-key (kbd "M-g")   'goto-line)
@@ -19,13 +20,15 @@
 (setq inhibit-startup-message t)
 (setq backup-directory-alist '(("." . "~/.emacs-backups")))
 
+;; sometimes i have to look at compiled JS files (gross)
+(setq line-number-display-limit-width 1000)
+
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
 ;; clear the buffer in eshell
 ;; src: http://daily-emacs.blogspot.com/2011/11/clear-in-eshell.html
 (defun eshell/clear ()
   "clear the eshell buffer."
-  ;; figure out if we are actually in the eshell buffer
   (interactive)
   (let ((inhibit-read-only t))
     (erase-buffer))
@@ -44,5 +47,6 @@
 ;; ido mode on
 (ido-mode t)
 
-(eshell)
+(server-start)
 
+(eshell)
