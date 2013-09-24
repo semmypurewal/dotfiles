@@ -10,14 +10,28 @@
 (require 'git)
 (require 'json)
 
+;; multi-term
 (require 'multi-term)
 (setq multi-term-program "/bin/bash")
 
+;; transpose-frame
 (require 'transpose-frame)
-;; some simple keybindings for transpose-frame
 (global-set-key (kbd "M-g")   'goto-line)
 (global-set-key (kbd "C-x )") 'rotate-frame-clockwise)
 (global-set-key (kbd "C-x (") 'rotate-frame-anticlockwise)
+
+;; js-comint
+(require 'js-comint)
+(setq inferior-js-program-command "node")
+(setq inferior-js-mode-hook
+      (lambda ()
+        ;; We like nice colors
+        (ansi-color-for-comint-mode-on)
+        ;; Deal with some prompt nonsense
+        (add-to-list
+         'comint-preoutput-filter-functions
+         (lambda (output)
+           (replace-regexp-in-string "\033\\[[0-9]+[GKJ]" "" output)))))
 
 ;; turn off some annoying 'features'
 (setq inhibit-startup-message t)
@@ -57,4 +71,4 @@
 
 ;; switching from eshell/term to multi-term
 ;; (eshell)
-(multi-term)
+;; (multi-term)
