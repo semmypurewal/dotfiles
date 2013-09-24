@@ -8,10 +8,13 @@
 (require 'p4v)
 (require 'js2-mode)
 (require 'git)
-(require 'transpose-frame)
 (require 'json)
 
-;; some simple keybindings
+(require 'multi-term)
+(setq multi-term-program "/bin/bash")
+
+(require 'transpose-frame)
+;; some simple keybindings for transpose-frame
 (global-set-key (kbd "M-g")   'goto-line)
 (global-set-key (kbd "C-x )") 'rotate-frame-clockwise)
 (global-set-key (kbd "C-x (") 'rotate-frame-anticlockwise)
@@ -47,6 +50,11 @@
 ;; ido mode on
 (ido-mode t)
 
+(column-number-mode t)
+
+;; start the emacs server so emacsclient works
 (server-start)
 
-(eshell)
+;; switching from eshell/term to multi-term
+;; (eshell)
+(multi-term)
