@@ -1,4 +1,18 @@
 (add-to-list 'load-path "~/.emacs.d/lib/")
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+(setq term-default-bg-color nil)
+(setq term-default-fg-color nil)
+
+(defun toggle-fullscreen ()
+  "Toggle full screen"
+  (interactive)
+  (set-frame-parameter
+     nil 'fullscreen
+     (when (not (frame-parameter nil 'fullscreen)) 'fullboth)))
+
 
 ;; add subdirectories of the lib directory
 (let ((default-directory "~/.emacs.d/lib/"))
@@ -9,6 +23,9 @@
 (require 'js2-mode)
 (require 'git)
 (require 'json)
+
+;; use aspell for MacOS
+(setq ispell-program-name "aspell")
 
 ;; multi-term
 (require 'multi-term)
