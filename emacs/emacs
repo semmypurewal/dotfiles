@@ -3,16 +3,11 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-(setq term-default-bg-color nil)
-(setq term-default-fg-color nil)
+;; (setq term-default-bg-color nil)
+;; (setq term-default-fg-color nil)
+(invert-face 'default)
 
-(defun toggle-fullscreen ()
-  "Toggle full screen"
-  (interactive)
-  (set-frame-parameter
-     nil 'fullscreen
-     (when (not (frame-parameter nil 'fullscreen)) 'fullboth)))
-
+(set-frame-parameter nil 'fullscreen 'fullboth)
 
 ;; add subdirectories of the lib directory
 (let ((default-directory "~/.emacs.d/lib/"))
@@ -38,26 +33,25 @@
 (global-set-key (kbd "C-x (") 'rotate-frame-anticlockwise)
 
 ;; js-comint
-(require 'js-comint)
-(setq inferior-js-program-command "node")
-(setq inferior-js-mode-hook
-      (lambda ()
-        ;; We like nice colors
-        (ansi-color-for-comint-mode-on)
-        ;; Deal with some prompt nonsense
-        (add-to-list
-         'comint-preoutput-filter-functions
-         (lambda (output)
-           (replace-regexp-in-string "\033\\[[0-9]+[GKJ]" "" output)))))
+;; (require 'js-comint)
+;; (setq inferior-js-program-command "node")
+;; (setq inferior-js-mode-hook
+;;      (lambda ()
+;;        ;; We like nice colors
+;;        (ansi-color-for-comint-mode-on)
+;;       ;; Deal with some prompt nonsense
+;;        (add-to-list
+;;         'comint-preoutput-filter-functions
+;;         (lambda (output)
+;;           (replace-regexp-in-string "\033\\[[0-9]+[GKJ]" "" output)))))
 
 ;; turn off some annoying 'features'
 (setq inhibit-startup-message t)
 (setq backup-directory-alist '(("." . "~/.emacs-backups")))
 
 ;; sometimes i have to look at compiled JS files (gross)
-(setq line-number-display-limit-width 1000)
-
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+;; (setq line-number-display-limit-width 1000)
+;; (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
 ;; clear the buffer in eshell
 ;; src: http://daily-emacs.blogspot.com/2011/11/clear-in-eshell.html
@@ -75,12 +69,10 @@
 (setq display-time-day-and-date t)
 (display-time)
 
-;; hide menu bar
-(menu-bar-mode -1)
-
 ;; ido mode on
 (ido-mode t)
 
+;; show column numbers
 (column-number-mode t)
 
 ;; start the emacs server so emacsclient works
