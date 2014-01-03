@@ -340,20 +340,20 @@ window height before hide, except height is larger than this.`"
   :type 'integer
   :group 'multi-term)
 
-(defcustom multi-term-dedicated-skip-other-window-p nil
-  "Default, can have `other-window' select window in cyclic ordering of windows.
-In cases you don't want to select `multi-term' dedicated window, use `other-window'
-and make `multi-term' dedicated window as a viewable sidebar.
-
-So please turn on this option if you want to skip `multi-term' dedicated window with `other-window'.
-
-Default is nil."
-  :type 'boolean
-  :set (lambda (symbol value)
-         (set symbol value)
-         (when (ad-advised-definition-p 'other-window)
-           (multi-term-dedicated-handle-other-window-advice value)))
-  :group 'multi-term)
+;; (defcustom multi-term-dedicated-skip-other-window-p nil
+;;  "Default, can have `other-window' select window in cyclic ordering of windows.
+;; In cases you don't want to select `multi-term' dedicated window, use `other-window'
+;; and make `multi-term' dedicated window as a viewable sidebar.
+;;
+;; So please turn on this option if you want to skip `multi-term' dedicated window with `other-window'.
+;;
+;; Default is nil."
+;;  :type 'boolean
+;;  :set (lambda (symbol value)
+;;         (set symbol value)
+;;         (when (ad-advised-definition-p 'other-window)
+;;           (multi-term-dedicated-handle-other-window-advice value)))
+;;  :group 'multi-term)
 
 (defcustom multi-term-dedicated-select-after-open-p nil
   "Default, multi-term won't focus terminal window after you open dedicated window.
