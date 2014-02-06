@@ -3,6 +3,14 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
+(if (string-equal "darwin" (symbol-name system-type))
+    (setenv "PATH" (concat "~/bin:" (getenv "PATH"))))
+
+(setenv "EDITOR" "emacsclient -a emacs")
+    
+;; let eshell modify global environment variables
+(setq eshell-modify-global-environment t)
+    
 ;; (setq term-default-bg-color nil)
 ;; (setq term-default-fg-color nil)
 (invert-face 'default)
@@ -79,5 +87,5 @@
 (server-start)
 
 ;; switching from eshell/term to multi-term
-;; (eshell)
+(eshell)
 ;; (multi-term)
