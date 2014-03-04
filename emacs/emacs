@@ -89,3 +89,24 @@
 ;; switching from eshell/term to multi-term
 (eshell)
 ;; (multi-term)
+
+;; open up a mini-eshell
+(defun quarter-window-vertically ()
+  "create a new window a quarter size of the current window"
+  (split-window-vertically)
+  (other-window 1)
+  (split-window-vertically)
+  (other-window -1)
+  (delete-window)
+)
+
+(defun open-mini-eshell ()
+  "open a mini-eshell in a small window at the bottom of the current window"
+  (interactive)
+  (quarter-window-vertically)
+  (other-window 1)
+  ;;(switch-to-buffer (get-buffer "*eshell*"))
+  (eshell)
+)
+
+(global-set-key (kbd "C-x 7") 'open-mini-eshell)
