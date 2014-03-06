@@ -43,9 +43,12 @@
 
 ;; transpose-frame
 (require 'transpose-frame)
+;;(global-set-key (kbd "C-x )") 'rotate-frame-clockwise)
+;;(global-set-key (kbd "C-x (") 'rotate-frame-anticlockwise)
+
+;; goto-line for old emacs
 (global-set-key (kbd "M-g")   'goto-line)
-(global-set-key (kbd "C-x )") 'rotate-frame-clockwise)
-(global-set-key (kbd "C-x (") 'rotate-frame-anticlockwise)
+
 
 ;; js-comint
 ;; (require 'js-comint)
