@@ -2,6 +2,8 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
+(load-theme 'tango-dark)
+(fringe-mode 0)
 
 (if (string-equal "darwin" (symbol-name system-type))
     (setenv "PATH" (concat "$HOME/bin:/usr/local/bin:" (getenv "PATH"))))
@@ -13,7 +15,7 @@
     
 ;; (setq term-default-bg-color nil)
 ;; (setq term-default-fg-color nil)
-(invert-face 'default)
+;; (invert-face 'default)
 
 (set-frame-parameter nil 'fullscreen 'fullboth)
 
@@ -120,3 +122,4 @@
 )
 
 (global-set-key (kbd "C-x 7") 'open-mini-eshell)
+
