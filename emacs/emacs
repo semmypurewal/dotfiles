@@ -45,6 +45,9 @@
 (require 'js2-mode)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
+;; json-reformat
+(require 'json-reformat)
+
 ;; multiple cursors!!
 (require 'multiple-cursors)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
@@ -110,7 +113,6 @@
   (interactive)
   (quarter-window-vertically)
   (other-window 1)
-  ;;(switch-to-buffer (get-buffer "*eshell*"))
   (eshell)
 )
 
