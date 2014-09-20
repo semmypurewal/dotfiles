@@ -8,27 +8,29 @@
 (if (string-equal "darwin" (symbol-name system-type))
     (setenv "PATH" (concat "$HOME/bin:/usr/local/bin:" (getenv "PATH"))))
 
-;; (setq-default mode-line-format nil)
-
+;; use emacsclient as the default editor
 (setenv "EDITOR" "emacsclient -a emacs")
+
+;; don't use the git pager by default
+(setenv "GIT_PAGER" "")
 
 ;; let eshell modify global environment variables
 (setq eshell-modify-global-environment t)
 
-;; (setq term-default-bg-color nil)
-;; (setq term-default-fg-color nil)
-;; (invert-face 'default)
-
-
-;; show trailing whitespace
+;; always show trailing whitespace
 (setq-default show-trailing-whitespace t)
 ;; except in eshell
-(add-hook 'eshell-hook
+(add-hook 'eshell-mode-hook
           (lambda ()
             (setq show-trailing-whitespace nil)))
 
+;; always use tabs
+(setq-default indent-tabs-mode nil)
 
+;; goto-line for old emacs
+(global-set-key (kbd "M-g")   'goto-line)
 
+;; always use fullscreen
 (set-frame-parameter nil 'fullscreen 'fullboth)
 
 ;; set up package repos
@@ -40,14 +42,8 @@
 (let ((default-directory "~/.emacs.d/lib/"))
   (normal-top-level-add-subdirs-to-load-path))
 
-(require 'p4)
-(require 'p4v)
 (require 'js2-mode)
-(require 'git)
-(require 'json)
-
-;; (require 'haskell-mode)
-;; (add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
 ;; multiple cursors!!
 (require 'multiple-cursors)
@@ -65,32 +61,14 @@
 
 ;; transpose-frame
 (require 'transpose-frame)
-;;(global-set-key (kbd "C-x )") 'rotate-frame-clockwise)
-;;(global-set-key (kbd "C-x (") 'rotate-frame-anticlockwise)
+(global-set-key (kbd "C-x }") 'rotate-frame-clockwise)
+(global-set-key (kbd "C-x {") 'rotate-frame-anticlockwise)
 
-;; goto-line for old emacs
-(global-set-key (kbd "M-g")   'goto-line)
-
-;; js-comint
-;; (require 'js-comint)
-;; (setq inferior-js-program-command "node")
-;; (setq inferior-js-mode-hook
-;;      (lambda ()
-;;        ;; We like nice colors
-;;        (ansi-color-for-comint-mode-on)
-;;       ;; Deal with some prompt nonsense
-;;        (add-to-list
-;;         'comint-preoutput-filter-functions
-;;         (lambda (output)
-;;           (replace-regexp-in-string "\033\\[[0-9]+[GKJ]" "" output)))))
-
-;; turn off some annoying 'features'
+;; don't start with the typical startup message
 (setq inhibit-startup-message t)
-(setq backup-directory-alist '(("." . "~/.emacs-backups")))
 
-;; sometimes i have to look at compiled JS files (gross)
-;; (setq line-number-display-limit-width 1000)
-;; (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+;; move emacs backups to a global directory
+(setq backup-directory-alist '(("." . "~/.emacs-backups")))
 
 ;; clear the buffer in eshell
 ;; src: http://daily-emacs.blogspot.com/2011/11/clear-in-eshell.html
@@ -100,9 +78,6 @@
   (let ((inhibit-read-only t))
     (erase-buffer))
 )
-
-;; spaces 4-ever
-(setq-default indent-tabs-mode nil)
 
 ;; show date and time
 (setq display-time-day-and-date t)
@@ -117,9 +92,8 @@
 ;; start the emacs server so emacsclient works
 (server-start)
 
-;; switching from eshell/term to multi-term
+;; let's start up with eshell
 (eshell)
-;; (multi-term)
 
 ;; open up a mini-eshell
 (defun quarter-window-vertically ()
