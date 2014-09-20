@@ -8,16 +8,33 @@
 (if (string-equal "darwin" (symbol-name system-type))
     (setenv "PATH" (concat "$HOME/bin:/usr/local/bin:" (getenv "PATH"))))
 
+;; (setq-default mode-line-format nil)
+
 (setenv "EDITOR" "emacsclient -a emacs")
-    
+
 ;; let eshell modify global environment variables
 (setq eshell-modify-global-environment t)
-    
+
 ;; (setq term-default-bg-color nil)
 ;; (setq term-default-fg-color nil)
 ;; (invert-face 'default)
 
+
+;; show trailing whitespace
+(setq-default show-trailing-whitespace t)
+;; except in eshell
+(add-hook 'eshell-hook
+          (lambda ()
+            (setq show-trailing-whitespace nil)))
+
+
+
 (set-frame-parameter nil 'fullscreen 'fullboth)
+
+;; set up package repos
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")))
 
 ;; add subdirectories of the lib directory
 (let ((default-directory "~/.emacs.d/lib/"))
@@ -28,6 +45,9 @@
 (require 'js2-mode)
 (require 'git)
 (require 'json)
+
+;; (require 'haskell-mode)
+;; (add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
 
 ;; multiple cursors!!
 (require 'multiple-cursors)
@@ -50,7 +70,6 @@
 
 ;; goto-line for old emacs
 (global-set-key (kbd "M-g")   'goto-line)
-
 
 ;; js-comint
 ;; (require 'js-comint)
@@ -122,4 +141,3 @@
 )
 
 (global-set-key (kbd "C-x 7") 'open-mini-eshell)
-
