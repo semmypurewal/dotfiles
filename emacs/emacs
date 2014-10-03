@@ -6,7 +6,7 @@
 (fringe-mode 0)
 
 (if (string-equal "darwin" (symbol-name system-type))
-    (setenv "PATH" (concat "$HOME/bin:/usr/local/bin:" (getenv "PATH"))))
+    (setenv "PATH" (concat (getenv "HOME") "/bin:/usr/local/bin:" (getenv "PATH"))))
 
 ;; use emacsclient as the default editor
 (setenv "EDITOR" "emacsclient -a emacs")
