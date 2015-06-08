@@ -80,15 +80,6 @@
 ;; move emacs backups to a global directory
 (setq backup-directory-alist '(("." . "~/.emacs-backups")))
 
-;; clear the buffer in eshell
-;; src: http://daily-emacs.blogspot.com/2011/11/clear-in-eshell.html
-(defun eshell/clear ()
-  "clear the eshell buffer."
-  (interactive)
-  (let ((inhibit-read-only t))
-    (erase-buffer))
-)
-
 ;; show date and time
 (setq display-time-day-and-date t)
 (display-time)
@@ -123,4 +114,80 @@
   (eshell)
 )
 
-(global-set-key (kbd "C-x 7") 'open-mini-eshell)
+;; great stuff: http://www.howardism.org/Technical/Emacs/eshell-fun.html
+(defun eshell-here ()
+  "Opens up a new shell in the directory associated with the
+current buffer's file. The eshell is renamed to match that
+directory to make multiple eshell windows easier."
+  (interactive)
+  (let* ((parent (if (buffer-file-name)
+                     (file-name-directory (buffer-file-name))
+                   default-directory))
+         (height (/ (window-total-height) 3))
+         (name   (car (last (split-string parent "/" t)))))
+    (split-window-vertically (- height))
+    (other-window 1)
+    (eshell "new")
+    (rename-buffer (concat "*eshell: " name "*"))
+
+    (insert (concat "ls"))
+    (eshell-send-input)))
+
+;; this seems buggy, will troubleshoot later
+;;(defun eshell/x ()
+;;  (insert "exit")
+;;  (eshell-send-input)
+;;  (delete-window))
+
+;; clear the buffer in eshell
+;; src: http://daily-emacs.blogspot.com/2011/11/clear-in-eshell.html
+(defun eshell/clear ()
+  "clear the eshell buffer."
+  (interactive)
+  (let ((inhibit-read-only t))
+    (erase-buffer))
+)
+
+(global-set-key (kbd "C-x 7") 'eshell-here)
+
+(add-to-list 'auto-mode-alist '("\\.js" . web-mode))
+(defadvice web-mode-highlight-part (around tweak-jsx activate)
+  (if (equal web-mode-content-type "js")
+      (let ((web-mode-enable-part-face nil))
+        ad-do-it)
+    ad-do-it))
+
+;; shamelessly stolen from http://www.warmenhoven.org/src/emacs.el/ew-window.el.html
+(defun eaw-fix-fullscreen ()
+  ;; (set-frame-parameter nil 'fullscreen (when (not (frame-parameter nil 'fullscreen)) 'fullboth))
+  (interactive)
+    (set-frame-parameter nil 'tool-bar-lines 1)
+    (set-frame-parameter nil 'tool-bar-lines 0)
+    ;; first, try to figure out how big a line/column is
+    (let (old-width old-height new-width new-height)
+      (setq old-width (frame-pixel-width))
+      (setq old-height (frame-pixel-height))
+      (set-frame-parameter nil 'width (+ 1 (frame-parameter nil 'width)))
+      (set-frame-parameter nil 'height (+ 1 (frame-parameter nil 'height)))
+      (setq new-width (frame-pixel-width))
+      (setq new-height (frame-pixel-height))
+      ;; now that we know how big a column is, try to jump immediately to the right size
+      (set-frame-parameter nil 'width (/ (x-display-pixel-width) (- new-width old-width)))
+      (set-frame-parameter nil 'height (/ (x-display-pixel-height) (- new-height old-height))))
+    ;; we're probably at the right size, but we may be very far off
+    ;; (e.g. different size fonts, etc.). so, first, we'll make sure
+    ;; the frame is definitely smaller than the screen
+    (while (< (x-display-pixel-width) (frame-pixel-width))
+      (set-frame-parameter nil 'width (- (frame-parameter nil 'width) 1)))
+    (while (< (x-display-pixel-height) (frame-pixel-height))
+      (set-frame-parameter nil 'height (- (frame-parameter nil 'height) 1)))
+    ;; now try to make it just slightly bigger
+    (while (> (x-display-pixel-width) (frame-pixel-width))
+      (set-frame-parameter nil 'width (+ 1 (frame-parameter nil 'width))))
+    (while (> (x-display-pixel-height) (frame-pixel-height))
+      (set-frame-parameter nil 'height (+ 1 (frame-parameter nil 'height))))
+    ;; now shrink it back to the appropriate size
+    (if (< (x-display-pixel-width) (frame-pixel-width))
+        (set-frame-parameter nil 'width (- (frame-parameter nil 'width) 1)))
+    (if (< (x-display-pixel-height) (frame-pixel-height))
+        (set-frame-parameter nil 'height (- (frame-parameter nil 'height) 1))))
