@@ -1,9 +1,11 @@
 (add-to-list 'load-path "~/.emacs.d/lib/")
 (menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(load-theme 'tango-dark)
-(fringe-mode 0)
+
+(when window-system
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (load-theme 'tango-dark)
+  (fringe-mode 0))
 
 ;; (require 'fill-column-indicator)
 ;; (setq-default fill-column 80)
@@ -51,13 +53,6 @@
 (require 'js2-mode)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
-;; groovy-mode
-(require 'groovy-mode)
-(add-hook 'groovy-mode-hook
-          (lambda ()
-            (setq c-basic-offset 4)))
-(add-to-list 'auto-mode-alist '("\\.groovy$" . groovy-mode))
-
 ;; json-reformat
 (require 'json-reformat)
 
@@ -69,16 +64,16 @@
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
 ;; use aspell for MacOS
-(setq ispell-program-name "aspell")
+;; (setq ispell-program-name "aspell")
 
 ;; multi-term
-(require 'multi-term)
-(setq multi-term-program "/bin/bash")
+;; (require 'multi-term)
+;; (setq multi-term-program "/bin/bash")
 
 ;; transpose-frame
-(require 'transpose-frame)
-(global-set-key (kbd "C-x }") 'rotate-frame-clockwise)
-(global-set-key (kbd "C-x {") 'rotate-frame-anticlockwise)
+;; (require 'transpose-frame)
+;; (global-set-key (kbd "C-x }") 'rotate-frame-clockwise)
+;; (global-set-key (kbd "C-x {") 'rotate-frame-anticlockwise)
 
 ;; don't start with the typical startup message
 (setq inhibit-startup-message t)
@@ -163,37 +158,3 @@ directory to make multiple eshell windows easier."
 ;;         ad-do-it)
 ;;     ad-do-it))
 
-;; shamelessly stolen from http://www.warmenhoven.org/src/emacs.el/ew-window.el.html
-(defun eaw-fix-fullscreen ()
-  ;; (set-frame-parameter nil 'fullscreen (when (not (frame-parameter nil 'fullscreen)) 'fullboth))
-  (interactive)
-    (set-frame-parameter nil 'tool-bar-lines 1)
-    (set-frame-parameter nil 'tool-bar-lines 0)
-    ;; first, try to figure out how big a line/column is
-    (let (old-width old-height new-width new-height)
-      (setq old-width (frame-pixel-width))
-      (setq old-height (frame-pixel-height))
-      (set-frame-parameter nil 'width (+ 1 (frame-parameter nil 'width)))
-      (set-frame-parameter nil 'height (+ 1 (frame-parameter nil 'height)))
-      (setq new-width (frame-pixel-width))
-      (setq new-height (frame-pixel-height))
-      ;; now that we know how big a column is, try to jump immediately to the right size
-      (set-frame-parameter nil 'width (/ (x-display-pixel-width) (- new-width old-width)))
-      (set-frame-parameter nil 'height (/ (x-display-pixel-height) (- new-height old-height))))
-    ;; we're probably at the right size, but we may be very far off
-    ;; (e.g. different size fonts, etc.). so, first, we'll make sure
-    ;; the frame is definitely smaller than the screen
-    (while (< (x-display-pixel-width) (frame-pixel-width))
-      (set-frame-parameter nil 'width (- (frame-parameter nil 'width) 1)))
-    (while (< (x-display-pixel-height) (frame-pixel-height))
-      (set-frame-parameter nil 'height (- (frame-parameter nil 'height) 1)))
-    ;; now try to make it just slightly bigger
-    (while (> (x-display-pixel-width) (frame-pixel-width))
-      (set-frame-parameter nil 'width (+ 1 (frame-parameter nil 'width))))
-    (while (> (x-display-pixel-height) (frame-pixel-height))
-      (set-frame-parameter nil 'height (+ 1 (frame-parameter nil 'height))))
-    ;; now shrink it back to the appropriate size
-    (if (< (x-display-pixel-width) (frame-pixel-width))
-        (set-frame-parameter nil 'width (- (frame-parameter nil 'width) 1)))
-    (if (< (x-display-pixel-height) (frame-pixel-height))
-        (set-frame-parameter nil 'height (- (frame-parameter nil 'height) 1))))
