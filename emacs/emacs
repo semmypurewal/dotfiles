@@ -1,3 +1,10 @@
+;; import the master.emacs file
+(defconst master-dir (getenv "LOCAL_ADMIN_SCRIPTS"))
+
+(if (file-readable-p (expand-file-name "master.emacs" master-dir))
+    (load-library (expand-file-name "master.emacs" master-dir))
+    (message "facebook master emacs file not found!"))
+
 (add-to-list 'load-path "~/.emacs.d/lib/")
 (menu-bar-mode -1)
 
