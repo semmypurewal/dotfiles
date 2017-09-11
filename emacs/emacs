@@ -94,9 +94,6 @@
 ;; start the emacs server so emacsclient works
 (server-start)
 
-;; let's start up with eshell
-(eshell)
-
 ;; open up a mini-eshell
 (defun quarter-window-vertically ()
   "create a new window a quarter size of the current window"
@@ -158,3 +155,7 @@ directory to make multiple eshell windows easier."
 ;;         ad-do-it)
 ;;     ad-do-it))
 
+;; let's start up with eshell if
+;; we're in the gui mode
+(when window-system
+  (eshell))
