@@ -23,9 +23,6 @@
 (if (string-equal "gnu/linux" (symbol-name system-type))
     (setenv "PATH" (concat (getenv "HOME") "/bin:/usr/local/bin:" (getenv "PATH"))))
 
-;; use emacsclient as the default editor
-(setenv "EDITOR" "emacsclient -a emacs")
-
 ;; don't use the git pager by default
 (setenv "GIT_PAGER" "")
 
@@ -57,14 +54,6 @@
 (let ((default-directory "~/.emacs.d/lib/"))
   (normal-top-level-add-subdirs-to-load-path))
 
-;; prettier-js
-(require 'prettier-js)
-(add-hook 'web-mode-hook 'prettier-js-mode)
-(setq prettier-js-args '(
-  "--trailing-comma" "all"
-  "--single-quote" "true"
-))
-
 ;; json-reformat
 (require 'json-reformat)
 
@@ -94,27 +83,6 @@
 ;; show column numbers
 (column-number-mode t)
 
-;; start the emacs server so emacsclient works
-(server-start)
-
-;; open up a mini-eshell
-(defun quarter-window-vertically ()
-  "create a new window a quarter size of the current window"
-  (split-window-vertically)
-  (other-window 1)
-  (split-window-vertically)
-  (other-window -1)
-  (delete-window)
-)
-
-(defun open-mini-eshell ()
-  "open a mini-eshell in a small window at the bottom of the current window"
-  (interactive)
-  (quarter-window-vertically)
-  (other-window 1)
-  (eshell)
-)
-
 ;; great stuff: http://www.howardism.org/Technical/Emacs/eshell-fun.html
 (defun eshell-here ()
   "Opens up a new shell in the directory associated with the
@@ -134,12 +102,6 @@ directory to make multiple eshell windows easier."
     (insert (concat "ls"))
     (eshell-send-input)))
 
-;; this seems buggy, will troubleshoot later
-;;(defun eshell/x ()
-;;  (insert "exit")
-;;  (eshell-send-input)
-;;  (delete-window))
-
 ;; clear the buffer in eshell
 ;; src: http://daily-emacs.blogspot.com/2011/11/clear-in-eshell.html
 (defun eshell/clear ()
@@ -151,12 +113,26 @@ directory to make multiple eshell windows easier."
 
 (global-set-key (kbd "C-x 7") 'eshell-here)
 
+;; web mode
 (add-to-list 'auto-mode-alist '("\\.js" . web-mode))
  (defadvice web-mode-highlight-part (around tweak-jsx activate)
    (if (equal web-mode-content-type "js")
        (let ((web-mode-enable-part-face nil))
          ad-do-it)
      ad-do-it))
+
+;; prettier-js
+(require 'prettier-js)
+(add-hook 'web-mode-hook 'prettier-js-mode)
+(add-hook 'web-mode-hook 'set-web-mode-indent-level)
+(setq prettier-js-args '(
+  "--trailing-comma" "all"
+  "--single-quote" "true"))
+
+(defun set-web-mode-indent-level ()
+  "Hooks for Web mode."
+  (setq web-mode-code-indent-offset 2))
+
 
 ;; let's start up with eshell if
 ;; we're in the gui mode
