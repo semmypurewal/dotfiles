@@ -1,4 +1,11 @@
 ;; import the master.emacs file
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (defconst master-dir (getenv "LOCAL_ADMIN_SCRIPTS"))
 
 (if (file-readable-p (expand-file-name "master.emacs" master-dir))
@@ -127,7 +134,10 @@ directory to make multiple eshell windows easier."
 (add-hook 'web-mode-hook 'set-web-mode-indent-level)
 (setq prettier-js-args '(
   "--trailing-comma" "all"
-  "--single-quote" "true"))
+  "--single-quote" "true"
+  "--no-bracket-spacing" "true"
+  "--jsx-bracket-same-line" "false"
+  "--parser" "flow"))
 
 (defun set-web-mode-indent-level ()
   "Hooks for Web mode."
