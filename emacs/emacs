@@ -13,6 +13,9 @@
     (message "facebook master emacs file not found!"))
 
 (add-to-list 'load-path "~/.emacs.d/lib/")
+(let ((default-directory  "~/.emacs.d/lib/"))
+  (normal-top-level-add-subdirs-to-load-path))
+
 (menu-bar-mode -1)
 
 (when window-system
@@ -23,6 +26,8 @@
 
 ;; (require 'fill-column-indicator)
 ;; (setq-default fill-column 80)
+
+(require 'web-mode)
 
 (if (string-equal "darwin" (symbol-name system-type))
     (setenv "PATH" (concat (getenv "HOME") "/bin:/usr/local/bin:" (getenv "PATH"))))
