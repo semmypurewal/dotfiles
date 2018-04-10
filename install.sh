@@ -1,34 +1,42 @@
 #!/bin/bash
 
-DIR="$( cd "$( dirname "$0" )" && pwd )"
+SELF="${BASH_SOURCE[0]}"
+SELF_DIR="$(cd "$(dirname $SELF)" ; pwd -P )"
 
-echo "running install script from $DIR"
+function backup () {
+    echo "backing up $1 to $1.BACKUP"
+    mv "$1" "$1.BACKUP"
+}
 
-if [ -e $HOME/.emacs ]; then
-    echo "...backing up .emacs file to .emacs.BACKUP"
-    mv $HOME/.emacs $HOME/.emacs.BACKUP
-fi
+function backup-if-exists () {
+    if [ -e "$1" ]; then
+        check-for-backup $1
+        backup "$1"
+    fi
+}
 
-if [ -e $HOME/.emacs.d/lib ]; then
-    echo "...backing up .emacs.d/lib directory to .emacs.d/lib.BACKUP"
-    mv $HOME/.emacs.d/lib $HOME/.emacs.d/lib.BACKUP
-fi
+function check-for-backup () {
+    if [ -e "$1.BACKUP" ]; then
+        echo "Oops! found $1.BACKUP. You probably don't want me to delete this."
+        echo "Move $1.BACKUP so I can safely write a new one."
+        exit 1
+    fi
+}
 
-echo "...linking .emacs"
-ln -s $DIR/emacs/emacs $HOME/.emacs
+function soft-link () {
+    echo "linking $1 to $2"
+    ln -s "$1" "$2"
+}
+
+backup-if-exists $HOME/.emacs
+backup-if-exists $HOME/.emacs.d/lib
+backup-if-exists $HOME/.tmux.conf
 
 if [ ! -e $HOME/.emacs.d ]; then
     echo "...creating emacs.d"
     mkdir $HOME/.emacs.d
 fi
 
-echo "../linking .emacs.d/lib"
-ln -s $DIR/emacs/lib $HOME/.emacs.d/lib
-
-if [ -e $HOME/.tmux.conf ]; then
-    echo "...backing up .tmux.conf file to .tmux.conf.BACKUP"
-    mv $HOME/.tmux.conf $HOME/.tmux.conf.BACKUP
-fi
-
-echo "...linking .tmux.conf"
-ln -s $DIR/tmux/tmux.conf $HOME/.tmux.conf
+soft-link $SELF_DIR/emacs/emacs $HOME/.emacs
+soft-link $SELF_DIR/emacs/lib $HOME/.emacs.d/lib
+soft-link $SELF_DIR/tmux/tmux.conf $HOME/.tmux.conf
