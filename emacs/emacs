@@ -148,7 +148,7 @@ directory to make multiple eshell windows easier."
   "--trailing-comma" "all"
   "--single-quote" "true"
   "--no-bracket-spacing" "true"
-  "--jsx-bracket-same-line" "false"
+  "--jsx-bracket-same-line" "true"
   "--parser" "flow"))
 
 (defun set-web-mode-indent-level ()
