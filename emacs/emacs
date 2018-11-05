@@ -24,6 +24,9 @@
   (load-theme 'tango-dark)
   (fringe-mode 0))
 
+;; auto revert stale buffers
+(global-auto-revert-mode t)
+
 ;; (require 'fill-column-indicator)
 ;; (setq-default fill-column 80)
 
