@@ -30,6 +30,13 @@
 ;; (require 'fill-column-indicator)
 ;; (setq-default fill-column 80)
 
+;; clang-format
+(require 'clang-format)
+(add-hook 'c-mode-common-hook
+          (function (lambda ()
+                    (add-hook 'before-save-hook
+                              'clang-format-buffer))))
+
 ;; helm
 (require 'helm-config)
 (global-set-key (kbd "M-x") #'helm-M-x)
@@ -160,7 +167,7 @@ directory to make multiple eshell windows easier."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (helm-projectile helm))))
+ '(package-selected-packages (quote (clang-format helm-projectile helm))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
