@@ -12,9 +12,9 @@
     (load-library (expand-file-name "master.emacs" master-dir))
     (message "facebook master emacs file not found!"))
 
-(add-to-list 'load-path "~/.emacs.d/lib/")
-(let ((default-directory  "~/.emacs.d/lib/"))
-  (normal-top-level-add-subdirs-to-load-path))
+;; set up package repos
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")))
 
 (menu-bar-mode -1)
 
@@ -64,15 +64,6 @@
 
 ;; always use fullscreen
 (set-frame-parameter nil 'fullscreen 'fullboth)
-
-;; set up package repos
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")))
-
-;; add subdirectories of the lib directory
-(let ((default-directory "~/.emacs.d/lib/"))
-  (normal-top-level-add-subdirs-to-load-path))
 
 ;; json-reformat
 (require 'json-reformat)
@@ -126,7 +117,7 @@ directory to make multiple eshell windows easier."
 
 (global-set-key (kbd "C-x 7") 'eshell-here)
 
-;; disable mercurial vc-backend (default is (RCS CVS SVN SCCS Bzr Git Hg Mtn Arch))
+;; disable Hg vc-backend (default is (RCS CVS SVN SCCS Bzr Git Hg Mtn Arch))
 (setq vc-handled-backends (quote (RCS CVS SVN SCCS Bzr Git Mtn Arch)))
 
 ;; web mode

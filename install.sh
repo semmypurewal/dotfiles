@@ -29,7 +29,7 @@ function soft-link () {
 }
 
 backup-if-exists $HOME/.emacs
-backup-if-exists $HOME/.emacs.d/lib
+backup-if-exists $HOME/.emacs.d/elpa
 backup-if-exists $HOME/.tmux.conf
 
 if [ ! -e $HOME/.emacs.d ]; then
@@ -38,5 +38,5 @@ if [ ! -e $HOME/.emacs.d ]; then
 fi
 
 soft-link $SELF_DIR/emacs/emacs $HOME/.emacs
-soft-link $SELF_DIR/emacs/lib $HOME/.emacs.d/lib
+soft-link $SELF_DIR/emacs/elpa $HOME/.emacs.d/elpa
 soft-link $SELF_DIR/tmux/tmux.conf $HOME/.tmux.conf
