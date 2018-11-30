@@ -38,17 +38,17 @@
                               'clang-format-buffer))))
 
 ;; helm
-(require 'helm-config)
-(global-set-key (kbd "M-x") #'helm-M-x)
-(global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-(global-set-key (kbd "C-x C-f") #'helm-find-files)
-(helm-mode 1)
+;; (require 'helm-config)
+;; (global-set-key (kbd "M-x") #'helm-M-x)
+;; (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
+;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
+;; (helm-mode 1)
 
 ;; helm-projectile
-(projectile-global-mode)
-(setq projectile-completion-system 'helm)
-(helm-projectile-on)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+;; (projectile-global-mode)
+;; (setq projectile-completion-system 'helm)
+;; (helm-projectile-on)
+;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 (if (string-equal "darwin" (symbol-name system-type))
     (setenv "PATH" (concat (getenv "HOME") "/bin:/usr/local/bin:" (getenv "PATH"))))
@@ -63,11 +63,11 @@
 (setq eshell-modify-global-environment t)
 
 ;; always show trailing whitespace
-(setq-default show-trailing-whitespace t)
+;; (setq-default show-trailing-whitespace t)
 ;; except in eshell
-(add-hook 'eshell-mode-hook
-          (lambda ()
-            (setq show-trailing-whitespace nil)))
+;; (add-hook 'eshell-mode-hook
+;;           (lambda ()
+;;            (setq show-trailing-whitespace nil)))
 
 ;; always use tabs
 (setq-default indent-tabs-mode nil)
@@ -95,7 +95,14 @@
 (display-time)
 
 ;; ido mode on
-(ido-mode t)
+(ido-mode 1)
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-vertical-mode 1)
+(setq ido-vertical-define-keys 'C-n-and-C-p-only)
+(setq ido-enable-flex-matching t)
+(setq ido-use-faces nil)
+
 
 ;; show column numbers
 (column-number-mode t)
@@ -167,7 +174,9 @@ directory to make multiple eshell windows easier."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (clang-format helm-projectile helm))))
+ '(package-selected-packages
+   (quote
+    (flx-ido ido-vertical-mode clang-format helm-projectile helm))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
