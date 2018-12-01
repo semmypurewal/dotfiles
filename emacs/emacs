@@ -15,14 +15,16 @@
 (display-time)
 
 (column-number-mode t)
-(fringe-mode -1)
 (global-auto-revert-mode t)
 (ido-mode 1)
 (ido-vertical-mode 1)
 (menu-bar-mode -1)
 (projectile-mode t)
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
+
+(when window-system
+  (fringe-mode 0)
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1))
 
 (add-to-list 'auto-mode-alist '("\\.js" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.json" . js-mode))
