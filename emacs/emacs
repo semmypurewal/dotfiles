@@ -13,20 +13,15 @@
 
 (menu-bar-mode -1)
 
-(when window-system
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (load-theme 'tango-dark)
-  (fringe-mode 0))
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(load-theme 'wheatgrass)
+(fringe-mode 0)
 
 ;; auto revert stale buffers
 (global-auto-revert-mode t)
 
-;; (require 'fill-column-indicator)
-;; (setq-default fill-column 80)
-
 ;; clang-format
-(require 'clang-format)
 (add-hook 'c-mode-common-hook
           (function (lambda ()
                     (add-hook 'before-save-hook
@@ -45,39 +40,11 @@
 ;; (helm-projectile-on)
 ;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
-(if (string-equal "darwin" (symbol-name system-type))
-    (setenv "PATH" (concat (getenv "HOME") "/bin:/usr/local/bin:" (getenv "PATH"))))
-
-(if (string-equal "gnu/linux" (symbol-name system-type))
-    (setenv "PATH" (concat (getenv "HOME") "/bin:/usr/local/bin:" (getenv "PATH"))))
-
-;; don't use the git pager by default
-(setenv "GIT_PAGER" "")
-
-;; let eshell modify global environment variables
-(setq eshell-modify-global-environment t)
-
-;; always show trailing whitespace
-;; (setq-default show-trailing-whitespace t)
-;; except in eshell
-;; (add-hook 'eshell-mode-hook
-;;           (lambda ()
-;;            (setq show-trailing-whitespace nil)))
-
-;; always use tabs
+;; always use spaces
 (setq-default indent-tabs-mode nil)
-
-;; goto-line for old emacs
-(global-set-key (kbd "M-g")   'goto-line)
 
 ;; always use fullscreen
 (set-frame-parameter nil 'fullscreen 'fullboth)
-
-;; json-reformat
-(require 'json-reformat)
-
-;; use aspell for MacOS
-;; (setq ispell-program-name "aspell")
 
 ;; don't start with the typical startup message
 (setq inhibit-startup-message t)
@@ -97,46 +64,17 @@
 (setq ido-vertical-define-keys 'C-n-and-C-p-only)
 (setq ido-enable-flex-matching t)
 (setq ido-use-faces nil)
-
+(projectile-mode t)
+(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 ;; show column numbers
 (column-number-mode t)
 
-;; great stuff: http://www.howardism.org/Technical/Emacs/eshell-fun.html
-(defun eshell-here ()
-  "Opens up a new shell in the directory associated with the
-current buffer's file. The eshell is renamed to match that
-directory to make multiple eshell windows easier."
-  (interactive)
-  (let* ((parent (if (buffer-file-name)
-                     (file-name-directory (buffer-file-name))
-                   default-directory))
-         (height (/ (window-total-height) 3))
-         (name   (car (last (split-string parent "/" t)))))
-    (split-window-vertically (- height))
-    (other-window 1)
-    (eshell "new")
-    (rename-buffer (concat "*eshell: " name "*"))
-
-    (insert (concat "ls"))
-    (eshell-send-input)))
-
-;; clear the buffer in eshell
-;; src: http://daily-emacs.blogspot.com/2011/11/clear-in-eshell.html
-(defun eshell/clear ()
-  "clear the eshell buffer."
-  (interactive)
-  (let ((inhibit-read-only t))
-    (erase-buffer))
-)
-
-(global-set-key (kbd "C-x 7") 'eshell-here)
-
-;; disable Hg vc-backend (default is (RCS CVS SVN SCCS Bzr Git Hg Mtn Arch))
-(setq vc-handled-backends (quote (RCS CVS SVN SCCS Bzr Git Mtn Arch)))
+;; disable Hg vc-backend (default is (RCS CVS SVN SCCS Bzr Git Hg Mtn))
+(setq vc-handled-backends (quote (RCS CVS SVN SCCS Bzr Git Mtn)))
 
 ;; web mode
-(require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.js" . web-mode))
  (defadvice web-mode-highlight-part (around tweak-jsx activate)
    (if (equal web-mode-content-type "js")
@@ -145,7 +83,6 @@ directory to make multiple eshell windows easier."
      ad-do-it))
 
 ;; prettier-js
-(require 'prettier-js)
 (add-hook 'web-mode-hook 'prettier-js-mode)
 (add-hook 'web-mode-hook 'set-web-mode-indent-level)
 (setq prettier-js-args '(
@@ -159,11 +96,6 @@ directory to make multiple eshell windows easier."
   "Hooks for Web mode."
   (setq web-mode-code-indent-offset 2))
 
-
-;; let's start up with eshell if
-;; we're in the gui mode
-(when window-system
-  (eshell))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -171,7 +103,7 @@ directory to make multiple eshell windows easier."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (flx-ido ido-vertical-mode clang-format helm-projectile helm))))
+    (flx-ido ido-vertical-mode clang-format helm-projectile helm json-reformat-region web-mode prettier-js))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
