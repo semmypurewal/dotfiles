@@ -1,87 +1,61 @@
 (package-initialize)
 
-;; import the master.emacs file (if it exists)
-(defconst master-dir (getenv "LOCAL_ADMIN_SCRIPTS"))
+(defconst master-file
+  (expand-file-name "master.emacs" (getenv "LOCAL_ADMIN_SCRIPTS")))
 
-(if (file-readable-p (expand-file-name "master.emacs" master-dir))
-    (load-library (expand-file-name "master.emacs" master-dir))
-    (message "facebook master emacs file not found!"))
+;; read fb master emacs file if it exists
+(if (file-readable-p master-file) (load-library master-file)
+  (message "facebook master emacs file not found"))
 
 ;; set up package repos
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 
-(menu-bar-mode -1)
-
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
 (load-theme 'wheatgrass)
-(fringe-mode 0)
-
-;; auto revert stale buffers
-(global-auto-revert-mode t)
-
-;; clang-format
-(add-hook 'c-mode-common-hook
-          (function (lambda ()
-                    (add-hook 'before-save-hook
-                              'clang-format-buffer))))
-
-;; always use spaces
-(setq-default indent-tabs-mode nil)
-
-;; always use fullscreen
-(set-frame-parameter nil 'fullscreen 'fullboth)
-
-;; don't start with the typical startup message
-(setq inhibit-startup-message t)
-
-;; move emacs backups to a global directory
-(setq backup-directory-alist '(("." . "~/.emacs-backups")))
-
-;; show date and time
-(setq display-time-day-and-date t)
 (display-time)
 
-;; ido mode on
+(column-number-mode t)
+(fringe-mode -1)
+(global-auto-revert-mode t)
 (ido-mode 1)
+(ido-vertical-mode 1)
+(menu-bar-mode -1)
+(projectile-mode t)
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+
+(add-to-list 'auto-mode-alist '("\\.js" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.json" . js-mode))
+
+(setq backup-directory-alist '(("." . "~/.emacs-backups")))
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
-(ido-vertical-mode 1)
 (setq ido-vertical-define-keys 'C-n-and-C-p-only)
 (setq ido-enable-flex-matching t)
 (setq ido-use-faces nil)
-(projectile-mode t)
-(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-
-;; show column numbers
-(column-number-mode t)
-
-;; disable Hg vc-backend (default is (RCS CVS SVN SCCS Bzr Git Hg Mtn))
-(setq vc-handled-backends (quote (RCS CVS SVN SCCS Bzr Git Mtn)))
-
-;; web mode
-(add-to-list 'auto-mode-alist '("\\.js" . web-mode))
- (defadvice web-mode-highlight-part (around tweak-jsx activate)
-   (if (equal web-mode-content-type "js")
-       (let ((web-mode-enable-part-face nil))
-         ad-do-it)
-     ad-do-it))
-
-;; prettier-js
-(add-hook 'web-mode-hook 'prettier-js-mode)
-(add-hook 'web-mode-hook 'set-web-mode-indent-level)
+(setq inhibit-startup-message t)
 (setq prettier-js-args '(
   "--trailing-comma" "all"
   "--single-quote" "true"
   "--no-bracket-spacing" "true"
   "--jsx-bracket-same-line" "true"
   "--parser" "flow"))
+(setq web-mode-code-indent-offset 2)
+(setq vc-handled-backends (quote (RCS CVS SVN SCCS Bzr Git Mtn)))
 
-(defun set-web-mode-indent-level ()
-  "Hooks for Web mode."
-  (setq web-mode-code-indent-offset 2))
+(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "C-x C-g") 'projectile-find-file)
+
+(setq-default indent-tabs-mode nil)
+
+(set-frame-parameter nil 'fullscreen 'fullboth)
+
+(add-hook 'web-mode-hook 'prettier-js-mode)
+(add-hook 'c-mode-common-hook
+          (function (lambda ()
+                    (add-hook 'before-save-hook
+                              'clang-format-buffer))))
 
 (custom-set-variables
  '(package-selected-packages
