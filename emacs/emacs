@@ -11,6 +11,8 @@
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 
+(require 'subr-x)
+
 (load-theme 'wheatgrass)
 (display-time)
 
@@ -42,12 +44,13 @@
   "--no-bracket-spacing" "true"
   "--jsx-bracket-same-line" "true"
   "--parser" "flow"))
+(setq projectile-enable-caching t)
 (setq web-mode-code-indent-offset 2)
 (setq vc-handled-backends (quote (RCS CVS SVN SCCS Bzr Git Mtn)))
 
 (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-(define-key projectile-mode-map (kbd "C-x C-g") 'projectile-find-file)
+(define-key projectile-mode-map (kbd "C-x C-j") 'projectile-find-file)
 
 (setq-default indent-tabs-mode nil)
 
