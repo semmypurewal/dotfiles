@@ -1,5 +1,7 @@
 (package-initialize)
 
+(defvar master-dir (getenv "ADMIN_SCRIPTS"))
+
 (defconst master-file
   (expand-file-name "master.emacs" (getenv "LOCAL_ADMIN_SCRIPTS")))
 
@@ -60,7 +62,7 @@
 (add-hook 'c-mode-common-hook
           (function (lambda ()
                     (add-hook 'before-save-hook
-                              'clang-format-buffer))))
+                              'clang-format-buffer nil t))))
 
 (custom-set-variables
  '(package-selected-packages
