@@ -66,6 +66,10 @@
           (function (lambda ()
                     (add-hook 'before-save-hook
                               'clang-format-buffer nil t))))
+(add-hook 'python-mode-hook
+          (function (lambda ()
+                    (add-hook 'before-save-hook
+                              'blacken-buffer nil t))))
 
 (add-hook 'minibuffer-setup-hook
           (lambda () (setq show-trailing-whitespace nil)))
