@@ -1,7 +1,5 @@
 (package-initialize)
 
-(defvar master-dir (getenv "ADMIN_SCRIPTS"))
-
 (defconst master-file
   (expand-file-name "master.emacs" (getenv "LOCAL_ADMIN_SCRIPTS")))
 
@@ -12,6 +10,8 @@
 ;; set up package repos
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
+
+;; (require 'fb-master)
 
 (require 'subr-x)
 
@@ -49,7 +49,7 @@
   "--no-bracket-spacing" "true"
   "--jsx-bracket-same-line" "true"
   "--parser" "flow"))
-(setq projectile-enable-caching t)
+;; (setq projectile-enable-caching t)
 (setq web-mode-code-indent-offset 2)
 (setq vc-handled-backends (quote (RCS CVS SVN SCCS Bzr Git Mtn)))
 

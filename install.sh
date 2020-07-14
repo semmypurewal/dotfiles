@@ -28,15 +28,8 @@ function soft-link () {
     ln -s "$1" "$2"
 }
 
-backup-if-exists $HOME/.emacs
-backup-if-exists $HOME/.emacs.d/elpa
+backup-if-exists $HOME/.emacs.d
 backup-if-exists $HOME/.tmux.conf
 
-if [ ! -e $HOME/.emacs.d ]; then
-    echo "...creating emacs.d"
-    mkdir $HOME/.emacs.d
-fi
-
-soft-link $SELF_DIR/emacs/emacs $HOME/.emacs
-soft-link $SELF_DIR/emacs/elpa $HOME/.emacs.d/elpa
+soft-link $SELF_DIR/emacs.d $HOME/.emacs.d
 soft-link $SELF_DIR/tmux/tmux.conf $HOME/.tmux.conf
