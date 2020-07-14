@@ -23,6 +23,8 @@
 (add-to-list 'auto-mode-alist '("\\.js" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.json" . js-mode))
 
+(setq js-indent-level 2)
+
 (setq backup-directory-alist '(("." . "~/.emacs-backups")))
 (setq linum-format "%4d\u2502 ")
 
