@@ -1,17 +1,7 @@
 (package-initialize)
 
-(defconst master-file
-  (expand-file-name "master.emacs" (getenv "LOCAL_ADMIN_SCRIPTS")))
-
-;; read fb master emacs file if it exists
-(if (file-readable-p master-file) (load-library master-file)
-  (message "facebook master emacs file not found"))
-
-;; set up package repos
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")))
-
-;; (require 'fb-master)
+(when (require 'fb-master nil t)
+  (require 'fb-master))
 
 (require 'subr-x)
 
@@ -20,7 +10,6 @@
 
 (column-number-mode t)
 (global-auto-revert-mode t)
-;; (global-linum-mode t)
 (ido-mode 1)
 (ido-vertical-mode 1)
 (menu-bar-mode -1)
@@ -49,7 +38,6 @@
   "--no-bracket-spacing" "true"
   "--jsx-bracket-same-line" "true"
   "--parser" "flow"))
-;; (setq projectile-enable-caching t)
 (setq web-mode-code-indent-offset 2)
 (setq vc-handled-backends (quote (RCS CVS SVN SCCS Bzr Git Mtn)))
 
