@@ -64,7 +64,13 @@
 (add-hook 'minibuffer-setup-hook
           (lambda () (setq show-trailing-whitespace nil)))
 
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+
 (custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ido-vertical-mode clang-format json-reformat-region web-mode prettier-js))))
+    (blacken ido-vertical-mode clang-format json-reformat-region web-mode prettier-js))))
