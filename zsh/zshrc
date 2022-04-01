@@ -1,4 +1,4 @@
-export PATH=~/bin:/opt/homebrew/bin:$PATH
+export PATH=~/bin:~/lib/node/bin:/opt/homebrew/bin:$PATH
 export EDITOR=emacs
-PS1="%~ -> "
+export PROMPT='%~ %# '
 
