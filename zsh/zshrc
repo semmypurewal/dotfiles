@@ -6,4 +6,4 @@ export HISTSIZE=10000
 export SAVEHIST=10000
 setopt EXTENDED_HISTORY
 setopt HIST_FIND_NO_DUPS
-
+setopt interactive_comments
