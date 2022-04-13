@@ -21,6 +21,8 @@
   (tool-bar-mode -1))
 
 (add-to-list 'auto-mode-alist '("\\.js" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mjs" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.json" . js-mode))
 
 (setq js-indent-level 2)
@@ -34,13 +36,14 @@
 (setq ido-enable-flex-matching t)
 (setq ido-use-faces nil)
 (setq inhibit-startup-message t)
+
+;; note that prettier-js and these args are
+;; only compatible with prettier 1.0
 (setq prettier-js-args '(
-  "--trailing-comma" "all"
-  "--single-quote" "true"
-  "--no-bracket-spacing" "true"
-  "--jsx-bracket-same-line" "true"
-  "--parser" "flow"))
-(setq web-mode-code-indent-offset 2)
+  "--trailing-comma" "none"
+  "--jsx-bracket-same-line" "false"))
+
+(setq web-mode-code-indent-offset 4)
 (setq vc-handled-backends (quote (RCS CVS SVN SCCS Bzr Git Mtn)))
 
 (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
