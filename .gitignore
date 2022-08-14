@@ -6,3 +6,5 @@ projectile-bookmarks.eld
 projectile.cache
 .projectile
 auto-save-list
+*.elc
+eln-cache
