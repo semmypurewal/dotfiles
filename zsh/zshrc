@@ -1,6 +1,6 @@
 export PATH=~/bin:/opt/node/bin:/opt/homebrew/bin:$PATH
 export EDITOR=emacs
-export PROMPT='%~ %# '
+export PROMPT='%m:%~ %# '
 export HISTFILE=~/.zsh_history
 export HISTSIZE=10000
 export SAVEHIST=10000
