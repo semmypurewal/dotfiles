@@ -8,6 +8,8 @@ setopt EXTENDED_HISTORY
 setopt HIST_FIND_NO_DUPS
 setopt interactive_comments
 
+alias ls="ls --color=auto"
+
 if command -v dircolors &> /dev/null
 then
     eval "$(dircolors ~/.dir_colors)"
