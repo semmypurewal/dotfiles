@@ -36,4 +36,3 @@ backup-if-exists $HOME/.dir_colors
 soft-link $SELF_DIR/emacs.d $HOME/.emacs.d
 soft-link $SELF_DIR/tmux/tmux.conf $HOME/.tmux.conf
 soft-link $SELF_DIR/zsh/zshrc $HOME/.zshrc
-soft-link $SELF_DIR/dir_colors/dir_colors $HOME/.dir_colors
