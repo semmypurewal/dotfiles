@@ -20,5 +20,5 @@ export LS_COLORS
 
 if [[ $OSTYPE == 'darwin'* ]];
 then
-    export LSCOLORS="$(python3 $DOTFILES_PATH/gnu2bsd/gnu2bsd.py)"
+    export LSCOLORS="$(python3 $DOTFILES_PATH/lib/gnu2bsd/gnu2bsd.py)"
 fi
