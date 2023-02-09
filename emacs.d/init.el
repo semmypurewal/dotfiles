@@ -37,13 +37,8 @@
 (setq ido-use-faces nil)
 (setq inhibit-startup-message t)
 
-;; note that prettier-js and these args are
-;; only compatible with prettier 1.0
-(setq prettier-js-args '(
-  "--trailing-comma" "none"
-  "--jsx-bracket-same-line" "false"))
+(setq web-mode-code-indent-offset 2)
 
-(setq web-mode-code-indent-offset 4)
 (setq vc-handled-backends (quote (RCS CVS SVN SCCS Bzr Git Mtn)))
 
 (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
