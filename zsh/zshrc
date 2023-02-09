@@ -10,7 +10,7 @@ else
     export PROMPTNAME=$HOST
 fi
 
-export PATH=~/bin:/opt/node/bin:/opt/homebrew/bin:$PATH
+export PATH=~/bin:~/.local/bin:/opt/node/bin:/opt/homebrew/bin:$PATH
 export EDITOR=emacs
 export PROMPT="%F{142}%B$PROMPTNAME%b:%~%f%F{153} ▶%f "
 export HISTFILE=~/.zsh_history
@@ -31,3 +31,7 @@ if [[ $OSTYPE == 'darwin'* ]];
 then
     export LSCOLORS="$(python3 $DOTFILES_PATH/lib/gnu2bsd/gnu2bsd.py)"
 fi
+
+zstyle ':completion:*:*:git:*' script ~/src/dotfiles/zsh/git-completion.bash
+fpath=(~/.zsh $fpath)
+autoload -Uz compinit && compinit
