@@ -26,6 +26,8 @@
 (add-to-list 'auto-mode-alist '("\\.ts" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.json" . js-mode))
+(add-to-list 'auto-mode-alist '("\\.yaml" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.yml" . yaml-mode))
 
 (setq js-indent-level 2)
 
@@ -72,5 +74,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   (quote
-    (blacken ido-vertical-mode clang-format json-reformat-region web-mode prettier-js))))
+   '(yaml-mode blacken ido-vertical-mode clang-format json-reformat-region web-mode prettier-js)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
