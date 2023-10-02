@@ -1,1 +1,1 @@
-Use at your own peril. Especially the horrible install script.
+These are my dotfiles. There are many like it, but this one is mine.
