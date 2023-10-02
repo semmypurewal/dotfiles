@@ -32,6 +32,13 @@ then
     export LSCOLORS="$(python3 $DOTFILES_PATH/lib/gnu2bsd/gnu2bsd.py)"
 fi
 
+if [[ $(command -v direnv) ]];
+then
+    eval "$(direnv hook zsh)"
+fi
+
+
 zstyle ':completion:*:*:git:*' script ~/src/dotfiles/zsh/git-completion.bash
 fpath=(~/.zsh $fpath)
 autoload -Uz compinit && compinit
+
