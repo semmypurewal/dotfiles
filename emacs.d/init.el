@@ -1,8 +1,5 @@
 (package-initialize)
 
-(when (require 'fb-master nil t)
-  (require 'fb-master))
-
 (require 'subr-x)
 
 (load-theme 'wheatgrass)
