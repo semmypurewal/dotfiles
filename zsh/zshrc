@@ -37,8 +37,7 @@ then
     eval "$(direnv hook zsh)"
 fi
 
-
-zstyle ':completion:*:*:git:*' script ~/src/dotfiles/zsh/git-completion.bash
-fpath=(~/.zsh $fpath)
+# git autocompletion
+zstyle ':completion:*:*:git:*' script $DOTFILES_PATH/zsh/git-completion.bash
+fpath=($DOTFILES_PATH/zsh $fpath)
 autoload -Uz compinit && compinit
-
