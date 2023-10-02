@@ -3,9 +3,6 @@ export DOTFILES_PATH=$(readlink ~/.zshrc | grep -o "^.*dotfiles")
 if [[ $HOST == 'RXGXFVTXY4'* ]];
 then
     export PROMPTNAME="macos"
-elif [[ $HOST == 'EXTP346360256' ]];
-then
-    export PROMPTNAME="mousetrap"
 else
     export PROMPTNAME=$HOST
 fi
