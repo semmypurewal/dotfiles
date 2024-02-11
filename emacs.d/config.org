@@ -1,5 +1,5 @@
 #+title: Emacs Configuration
-#+author: Harry R. Schwartz
+#+author: Semmy Purewal
 #+options: toc:nil num:nil
 
 * Intro
@@ -11,10 +11,6 @@ Naturally, I haven't done anything with it yet, but maybe I'll
 eventually break this file up into useful sections.
 
 #+begin_src emacs-lisp
-;; (package-initialize)
-
-;; (require 'subr-x)
-
 (load-theme 'wheatgrass)
 (display-time)
 
