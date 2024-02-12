@@ -9,3 +9,4 @@ auto-save-list
 *.elc
 eln-cache
 config.el
+.emacs-backups
