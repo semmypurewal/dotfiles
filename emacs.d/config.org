@@ -2,105 +2,181 @@
 #+author: Semmy Purewal
 #+options: toc:nil num:nil
 
-* Intro
-
+** Intro
 This is a cool idea that [[https://harryrschwartz.com/2016/02/15/switching-to-a-literate-emacs-configuration][I stumbled upon]]! You can use =org-mode= to
 set up your Emacs configuration!
 
-Naturally, I haven't done anything with it yet, but maybe I'll
-eventually break this file up into useful sections.
+So, yeah, you may notice that I check my elpa directory into source
+control. It seems to be the most stable way to handle things. I've
+considered using [[https://github.com/radian-software/straight.el][straight.el]] since it promises reproducible package
+installations by version. Maybe I'll come back to that one day.
+
+** Basics
+
+I primarily use the terminal version of Emacs via tmux, but I do
+include a couple fixes for window mode.
 
 #+begin_src emacs-lisp
-(load-theme 'wheatgrass)
-(display-time)
+  (load-theme 'wheatgrass)
+  (display-time)
+  (column-number-mode t)
+  (global-auto-revert-mode t)
+  (menu-bar-mode -1)
 
-(column-number-mode t)
-(global-auto-revert-mode t)
-(ido-mode 1)
-(ido-vertical-mode 1)
-(menu-bar-mode -1)
-(projectile-mode t)
+  (setq backup-directory-alist '(("." . "~/.emacs.d/.emacs-backups")))
+  (setq linum-format "%4d\u2502")
+  (setq inhibit-startup-message t)
+  (setq show-trailing-whitespace t)
+  (setq custom-file "custom.el")
 
-(setq-default tab-width 2)
+  (setq-default tab-width 2)
+  (setq-default indent-tabs-mode nil)
 
-(when window-system
-  (fringe-mode 0)
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1))
+  (add-hook 'minibuffer-setup-hook
+            (lambda () (setq show-trailing-whitespace nil)))
 
-(add-to-list 'auto-mode-alist '("\\.js" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.mjs" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.ts" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.tsx" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.html" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.css" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.json" . js-mode))
-(add-to-list 'auto-mode-alist '("\\.yaml" . yaml-mode))
-(add-to-list 'auto-mode-alist '("\\.yml" . yaml-mode))
-(add-to-list 'auto-mode-alist '("\\.vert" . glsl-mode))
-(add-to-list 'auto-mode-alist '("\\.frag" . glsl-mode))
+  (when window-system
+    (fringe-mode 0)
+    (scroll-bar-mode -1)
+    (tool-bar-mode -1)
+    (set-frame-parameter nil 'fullscreen 'fullboth))
 
-(setq js-indent-level 2)
+  (load custom-file)
+#+end_src
 
-(setq backup-directory-alist '(("." . "~/.emacs-backups")))
-(setq linum-format "%4d\u2502 ")
+** JavaScript
 
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-(setq ido-vertical-define-keys 'C-n-and-C-p-only)
-(setq ido-enable-flex-matching t)
-(setq ido-use-faces nil)
-(setq inhibit-startup-message t)
+I spend a lot of time in JavaScript-land, and the two essential
+packages for me are prettier-js and web-mode. So let's start with
+those.
 
-(setq web-mode-code-indent-offset 2)
-(setq web-mode-markup-indent-offset 2)
-(setq web-mode-css-indent-offset 2)
+Worth noting: prettier-js requires =prettier= to be installed in your
+path.
 
-(setq vc-handled-backends (quote (RCS CVS SVN SCCS Bzr Git Mtn)))
+#+begin_src emacs-lisp
+  (use-package prettier-js
+    :ensure t)
 
-(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-(define-key projectile-mode-map (kbd "C-x C-j") 'projectile-find-file)
+  (use-package web-mode
+    :init
+    (setq web-mode-code-indent-offset 2)
+    (setq web-mode-markup-indent-offset 2)
+    (setq web-mode-css-indent-offset 2)
 
-(setq-default indent-tabs-mode nil)
+    :config
+    (add-to-list 'auto-mode-alist '("\\.js" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.mjs" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.jsx" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.ts" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.tsx" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.html" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.css" . web-mode))
+    (add-hook 'web-mode-hook 'prettier-js-mode)
 
-(set-frame-parameter nil 'fullscreen 'fullboth)
+    :ensure t)
+#+end_src
 
-(add-hook 'web-mode-hook 'prettier-js-mode)
+I still use the built-in =js-mode= for =.json= files. I'm not sure
+why.
 
-(c-add-style "my-c-style" '((c-tab-always-indent . t)
-                            (c-basic-offset . 4)
-                            (c-offsets-alist (access-label . -2)
-                                             (label . +))))
-(setq c-default-style "my-c-style")
+#+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.json" . js-mode))
+  (setq js-indent-level 2)
+#+end_src
 
-(add-hook 'c-mode-common-hook
-          (function (lambda ()
-                    (add-hook 'before-save-hook
-                              'clang-format-buffer nil t))))
-(add-hook 'python-mode-hook
+** Python/C++
+
+I got so used to auto-format in web-mode, that I ended up using
+similar plugins for C++ (clang-format) and Python (black). I don't
+think I could live without auto-formatters these days.
+
+Similar to =prettier=, these require =black= and =clang-format= to be
+in your path.
+
+#+begin_src emacs-lisp
+  (use-package blacken
+    :config
+    (add-hook 'python-mode-hook
           (function (lambda ()
                     (add-hook 'before-save-hook
                               'blacken-buffer nil t))))
+    :ensure t)
 
-(add-hook 'minibuffer-setup-hook
-          (lambda () (setq show-trailing-whitespace nil)))
+  (use-package clang-format
+    :config
+    (add-hook 'c-mode-common-hook
+              (function (lambda ()
+                          (add-hook 'before-save-hook
+                                    'clang-format-buffer nil t))))
+    :ensure t)
+#+end_src
 
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+And here are a few minor C/C++ fixes that seem to go well with the
+default =clang-format= style.
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(glsl-mode yaml-mode blacken ido-vertical-mode clang-format json-reformat-region web-mode prettier-js))
- '(warning-suppress-log-types '((comp))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
- #+end_src
+#+begin_src emacs-lisp
+  (c-add-style "my-c-style" '((c-tab-always-indent . t)
+                              (c-basic-offset . 4)
+                              (c-offsets-alist (access-label . -2)
+                                               (label . +))))
+  (setq c-default-style "my-c-style")
+#+end_src
+
+** IDO
+
+I like using =ido-mode=, and =ido-vertical-mode= makes it look so much
+nicer.
+
+#+begin_src emacs-lisp
+  (ido-mode 1)
+  (setq ido-enable-flex-matching t)
+  (setq ido-everywhere t)
+  (setq ido-enable-flex-matching t)
+  (setq ido-use-faces nil)
+
+  (use-package ido-vertical-mode
+    :config
+    (ido-vertical-mode 1)
+    (setq ido-vertical-define-keys 'C-n-and-C-p-only)
+
+    :ensure t)
+#+end_src
+
+* Projectile
+
+I primarily use projectile for fuzzy search (=projectile-find-file=).
+
+#+begin_src emacs-lisp
+  (use-package projectile
+    :config
+    (projectile-mode t)
+    (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    (define-key projectile-mode-map (kbd "C-x C-j") 'projectile-find-file)
+
+    :ensure t)
+#+end_src
+
+** Miscellaneous
+
+Lately I've been doing quite a bit of yaml for some reason.
+
+#+begin_src emacs-lisp
+  (use-package yaml-mode
+    :config
+    (add-to-list 'auto-mode-alist '("\\.yaml" . yaml-mode))
+    (add-to-list 'auto-mode-alist '("\\.yml" . yaml-mode))
+
+    :ensure t)
+#+end_src
+
+And I've been playing around with GLES shaders.
+
+#+begin_src emacs-lisp
+  (use-package glsl-mode
+    :config
+    (add-to-list 'auto-mode-alist '("\\.vert" . glsl-mode))
+    (add-to-list 'auto-mode-alist '("\\.frag" . glsl-mode))
+
+    :ensure t)
+#+end_src

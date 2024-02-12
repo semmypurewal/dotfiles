@@ -1,2 +1,12 @@
-;;; -*- no-byte-compile: t -*-
-(define-package "prettier-js" "20180109.726" "Minor mode to format JS code on file save" 'nil :commit "fac9dd29720f8417bd8cd5dd8ab5138c6dd7d701" :keywords '("convenience" "wp" "edit" "js") :authors '(("James Long and contributors")) :maintainer '("James Long and contributors") :url "https://github.com/prettier/prettier-emacs")
+(define-package "prettier-js" "20180109.726" "Minor mode to format JS code on file save" 'nil :commit "0e8b95c4e5898a03e85dbc555c37b4f968292aec" :authors
+  '(("James Long and contributors"))
+  :maintainers
+  '(("James Long and contributors"))
+  :maintainer
+  '("James Long and contributors")
+  :keywords
+  '("convenience" "wp" "edit" "js")
+  :url "https://github.com/prettier/prettier-emacs")
+;; Local Variables:
+;; no-byte-compile: t
+;; End:
