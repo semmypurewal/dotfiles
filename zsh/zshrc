@@ -1,6 +1,6 @@
 export DOTFILES_PATH=$(readlink ~/.zshrc | grep -o "^.*dotfiles")
 
-if [[ $HOST == 'RXGXFVTXY4'* ]];
+if [[ $OSTYPE == 'darwin'* ]];
 then
     export PROMPTNAME="macos"
 else
