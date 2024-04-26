@@ -7,6 +7,8 @@
 
 (defun package--save-selected-packages (&rest opt) nil)
 
+;; custom file
+(setq custom-file "custom.el")
 (load custom-file)
 
 ;; System-specific config
@@ -23,7 +25,7 @@
 (setq linum-format "%4d\u2502")
 (setq inhibit-startup-message t)
 (setq show-trailing-whitespace t)
-(setq custom-file "custom.el")
+
 
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
