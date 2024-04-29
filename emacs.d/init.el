@@ -79,15 +79,17 @@
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-css-indent-offset 2)
 
+  :mode
+  (("\\.js" . web-mode)
+   ("\\.mjs" . web-mode)
+   ("\\.jsx" . web-mode)
+   ("\\.ts" . web-mode)
+   ("\\.tsx" . web-mode)
+   ("\\.html" . web-mode)
+   ("\\.css" . web-mode)
+   ("\\.json" . web-mode))
+
   :config
-  (add-to-list 'auto-mode-alist '("\\.js" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.mjs" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.jsx" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.ts" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.tsx" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.html" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.css" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.json" . web-mode))
   (add-hook 'web-mode-hook 'prettier-js-mode)
 
   :ensure t)
