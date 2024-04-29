@@ -89,8 +89,8 @@
    ("\\.css" . web-mode)
    ("\\.json" . web-mode))
 
-  :config
-  (add-hook 'web-mode-hook 'prettier-js-mode)
+  :hook
+  (web-mode . prettier-js-mode)
 
   :ensure t)
 
