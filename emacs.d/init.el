@@ -26,7 +26,6 @@
 (setq inhibit-startup-message t)
 (setq show-trailing-whitespace t)
 
-
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
 
@@ -38,7 +37,6 @@
   (scroll-bar-mode -1)
   (tool-bar-mode -1)
   (set-frame-parameter nil 'fullscreen 'fullboth))
-
 
 ;; IDO
 (ido-mode 1)
@@ -64,13 +62,31 @@
 
   :ensure t)
 
-;; IDE Stuff (more to come, I hope)
-(use-package company
+;; IDE Stuff
+(use-package eglot
+  :config
+  ;; npm install -g vscode-langservers-extracted
+  ;; (add-to-list 'eglot-server-programs '(web-html-mode . ("vscode-html-language-server" "--stdio")))
+  ;; (add-to-list 'eglot-server-programs '(web-css-mode . ("vscode-css-language-server" "--stdio")))
+
+  ;; npm install -g typescript-language-server typescript
+  (add-to-list 'eglot-server-programs '(web-js-mode . ("typescript-language-server" "--stdio")))
+
+  :hook
+  (web-js-mode . eglot-ensure)
+  (web-html-mode . eglot-ensure)
+  (web-css-mode . eglot-ensure)
+
   :ensure t)
 
+(use-package company
+  :after eglot
+  :hook
+  (eglot-managed-mode . company-mode)
+  :ensure t)
 
 ;; Front End Dev Config
-(use-package prettier-js
+ (use-package prettier-js
   :ensure t)
 
 (use-package web-mode
@@ -78,19 +94,22 @@
   (setq web-mode-code-indent-offset 2)
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-css-indent-offset 2)
+  (define-derived-mode web-js-mode web-mode "web-js-mode")
+  (define-derived-mode web-html-mode web-mode "web-html-mode")
+  (define-derived-mode web-css-mode web-mode "web-css-mode")
 
   :mode
-  (("\\.js" . web-mode)
-   ("\\.mjs" . web-mode)
-   ("\\.jsx" . web-mode)
-   ("\\.ts" . web-mode)
-   ("\\.tsx" . web-mode)
-   ("\\.html" . web-mode)
-   ("\\.css" . web-mode)
-   ("\\.json" . web-mode))
+  (("\\.js" . web-js-mode)
+   ("\\.mjs" . web-js-mode)
+   ("\\.jsx" . web-js-mode)
+   ("\\.ts" . web-js-mode)
+   ("\\.tsx" . web-js-mode)
+   ("\\.json" . web-js-mode)
+   ("\\.html" . web-html-mode)
+   ("\\.css" . web-css-mode))
 
   :hook
-  (web-mode . prettier-js-mode)
+  (web-js-mode . prettier-js-mode)
 
   :ensure t)
 
