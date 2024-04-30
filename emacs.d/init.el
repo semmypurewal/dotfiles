@@ -38,29 +38,10 @@
   (tool-bar-mode -1)
   (set-frame-parameter nil 'fullscreen 'fullboth))
 
-;; IDO
-(ido-mode 1)
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-(setq ido-enable-flex-matching t)
-(setq ido-use-faces nil)
+(fido-vertical-mode 1)
 
-(use-package ido-vertical-mode
-  :config
-  (ido-vertical-mode 1)
-  (setq ido-vertical-define-keys 'C-n-and-C-p-only)
-
-  :ensure t)
-
-;; Projectile
-(use-package projectile
-  :config
-  (projectile-mode t)
-  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  (define-key projectile-mode-map (kbd "C-x C-j") 'projectile-find-file)
-
-  :ensure t)
+(use-package project
+  :bind (("C-x C-j" . project-find-file)))
 
 ;; IDE Stuff
 (use-package eglot
