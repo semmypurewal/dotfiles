@@ -96,19 +96,11 @@
 
 ;; Python
 (use-package blacken
-  :config
-  (add-hook 'python-mode-hook
-            (function (lambda ()
-                        (add-hook 'before-save-hook
-                                  'blacken-buffer nil t))))
-  :ensure t)
-
-(use-package clang-format
-  :config
-  (add-hook 'c-mode-common-hook
-            (function (lambda ()
-                        (add-hook 'before-save-hook
-                                  'clang-format-buffer nil t))))
+  :hook
+  (python-mode .
+               (lambda ()
+                 (add-hook 'before-save-hook
+                           'blacken-buffer nil t)))
   :ensure t)
 
 ;; C/C++
@@ -118,20 +110,25 @@
                                              (label . +))))
 (setq c-default-style "my-c-style")
 
+(use-package clang-format
+  :hook
+  (c-mode-common .
+               (lambda ()
+                 (add-hook 'before-save-hook
+                           'clang-format-buffer nil t)))
+  :ensure t)
 
 ;; Misc
 (use-package yaml-mode
-  :config
-  (add-to-list 'auto-mode-alist '("\\.yaml" . yaml-mode))
-  (add-to-list 'auto-mode-alist '("\\.yml" . yaml-mode))
-
+  :mode
+  ("\\.yaml" . yaml-mode)
+  ("\\.yml" . yaml-mode)
   :ensure t)
 
 (use-package glsl-mode
-  :config
-  (add-to-list 'auto-mode-alist '("\\.vert" . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.frag" . glsl-mode))
-
+  :mode
+  ("\\.vert" . glsl-mode)
+  ("\\.frag" . glsl-mode)
   :ensure t)
 
 
