@@ -10,7 +10,6 @@ auto-save-list
 eln-cache
 config.el
 .emacs-backups
-docker/buildx
-docker/contexts
-docker/daemon.json
+docker/*
+!docker/config.json
 emacs.d/projects
