@@ -44,8 +44,11 @@
 (fido-vertical-mode 1)
 
 (use-package project
-  :bind (("C-x C-j" . project-find-file)))
+  :config
+  (setq project-switch-commands 'project-find-file)
 
+  :bind
+  (("C-x C-j" . project-find-file)))
 
 ;; IDE Stuff
 (use-package eglot
