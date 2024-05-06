@@ -118,6 +118,10 @@
                                              (label . +))))
 (setq c-default-style "my-c-style")
 
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (local-set-key (kbd "C-x C-k") 'ff-get-other-file)))
+
 
 ;; Misc
 (use-package yaml-mode
@@ -131,5 +135,3 @@
   ("\\.vert" . glsl-mode)
   ("\\.frag" . glsl-mode)
   :ensure t)
-
-
