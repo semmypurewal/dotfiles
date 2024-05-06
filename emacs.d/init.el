@@ -7,6 +7,9 @@
 
 (defun package--save-selected-packages (&rest opt) nil)
 
+;; add my custom functions
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp/"))
+
 ;; custom file
 (setq custom-file "custom.el")
 (load custom-file)
@@ -43,6 +46,7 @@
 (use-package project
   :bind (("C-x C-j" . project-find-file)))
 
+
 ;; IDE Stuff
 (use-package eglot
   :config
@@ -66,10 +70,6 @@
   (eglot-managed-mode . company-mode)
   :ensure t)
 
-;; Front End Dev Config
- (use-package prettier-js
-  :ensure t)
-
 (use-package web-mode
   :init
   (setq web-mode-code-indent-offset 2)
@@ -89,19 +89,24 @@
    ("\\.html" . web-html-mode)
    ("\\.css" . web-css-mode))
 
-  :hook
-  (web-js-mode . prettier-js-mode)
-
   :ensure t)
 
-;; Python
-(use-package blacken
+;; Autoformatters
+(use-package autoformat
   :hook
   (python-mode .
                (lambda ()
                  (add-hook 'before-save-hook
-                           'blacken-buffer nil t)))
-  :ensure t)
+                           #'python-format-buffer nil t)))
+  (c-mode-common .
+               (lambda ()
+                 (add-hook 'before-save-hook
+                           #'cpp-format-buffer nil t)))
+  (web-js-mode .
+               (lambda ()
+                 (add-hook 'before-save-hook
+                           #'js-format-buffer nil t))))
+
 
 ;; C/C++
 (c-add-style "my-c-style" '((c-tab-always-indent . t)
@@ -110,13 +115,6 @@
                                              (label . +))))
 (setq c-default-style "my-c-style")
 
-(use-package clang-format
-  :hook
-  (c-mode-common .
-               (lambda ()
-                 (add-hook 'before-save-hook
-                           'clang-format-buffer nil t)))
-  :ensure t)
 
 ;; Misc
 (use-package yaml-mode
