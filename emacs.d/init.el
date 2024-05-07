@@ -47,6 +47,11 @@
 
 (fido-vertical-mode 1)
 
+(use-package basics
+  :bind
+  (("C-c q" . 'close-and-kill-this-pane))
+  (("C-c x" . 'close-and-kill-next-pane)))
+
 (use-package project
   :config
   (setq project-switch-commands 'project-find-file)
