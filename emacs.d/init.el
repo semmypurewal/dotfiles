@@ -73,7 +73,8 @@
   (web-js-mode . eglot-ensure)
   (web-html-mode . eglot-ensure)
   (web-css-mode . eglot-ensure)
-  (c-common-mode . eglot-ensure)
+  (c-mode . eglot-ensure)
+  (c++-mode . eglot-ensure)
   (python-mode . eglot-ensure)
 
   :ensure t)
