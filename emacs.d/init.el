@@ -5,7 +5,7 @@
 (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t)
 
 ;; Custom file
-(setq custom-file "custom.el")
+(setq custom-file (expand-file-name "~/.emacs.d/custom.el"))
 (load custom-file)
 
 ;; This seems dangerous, but it's annoying to see byte compile
@@ -20,7 +20,7 @@
   (setq dired-use-ls-dired nil))
 
 ;; General UI config
-(load-theme 'wheatgrass)
+(load-theme 'zenburn)
 (display-time)
 (column-number-mode t)
 (global-auto-revert-mode t)
