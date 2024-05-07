@@ -19,16 +19,16 @@
   (setq dired-use-ls-dired nil))
 
 ;; General UI config
+(load-theme 'wheatgrass)
 (display-time)
 (column-number-mode t)
 (global-auto-revert-mode t)
 (menu-bar-mode -1)
 
 (setq backup-directory-alist '(("." . "~/.emacs.d/.emacs-backups")))
-(setq linum-format "%4d\u2502")
 (setq inhibit-startup-message t)
-(setq show-trailing-whitespace t)
 
+(setq-default show-trailing-whitespace t)
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
 
