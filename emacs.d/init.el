@@ -30,6 +30,7 @@
 (setq inhibit-startup-message t)
 
 (setq-default show-trailing-whitespace t)
+(setq-default require-final-newline t)
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
 
