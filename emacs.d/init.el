@@ -26,6 +26,8 @@
 (global-auto-revert-mode t)
 (menu-bar-mode -1)
 
+(global-set-key (kbd "C-c l") 'display-line-numbers-mode)
+
 (setq backup-directory-alist '(("." . "~/.emacs.d/.emacs-backups")))
 (setq inhibit-startup-message t)
 
