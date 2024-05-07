@@ -3,9 +3,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(glsl-mode yaml-mode blacken ido-vertical-mode clang-format json-reformat-region web-mode prettier-js))
- '(warning-suppress-log-types '((comp))))
+ '(package-selected-packages '(glsl-mode yaml-mode web-mode company)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

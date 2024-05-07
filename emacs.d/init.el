@@ -3,16 +3,17 @@
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t)
-(package-initialize)
 
-(defun package--save-selected-packages (&rest opt) nil)
-
-;; add my custom functions
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp/"))
-
-;; custom file
+;; Custom file
 (setq custom-file "custom.el")
 (load custom-file)
+
+;; This seems dangerous, but it's annoying to see byte compile
+;; warnings pop up when installing packages.
+(setq byte-compile-warnings nil)
+
+;; Add my local lisp functions
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp/"))
 
 ;; System-specific config
 (when (string= system-type "darwin")
