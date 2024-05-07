@@ -10,7 +10,8 @@
   (eq (shell-command (concat cmd " " file)) 0))
 
 (defun run-shell-commands-on-file (cmds file)
-  "Run a sequence of shell commands on a file and return t on success, nil on failure"
+  "Run a sequence of shell commands on a file and return t on success,
+   nil on failure."
   (if (eq (null cmds) nil)
       (let ((result (run-shell-command-on-file (car cmds) file)))
         (if result
@@ -21,7 +22,8 @@
       t))
 
 (defun run-shell-commands-on-buffer (cmds)
-  "Run a sequence of shell commands on a buffer and return t on success, nil on failure"
+  "Run a sequence of shell commands on a buffer and return t on
+   success, nil on failure."
   (let ((temp-file (create-temp-file-in-default-directory)))
     (write-region (point-min) (point-max) temp-file)
     (if (run-shell-commands-on-file cmds temp-file)
@@ -54,7 +56,6 @@
   (interactive)
   (if (run-shell-commands-on-buffer '("prettier -w --parser typescript"))
       (message "js-autoformat: success")
-    (message "js-autoformat: failed")))  
-
+    (message "js-autoformat: failed")))
 
 (provide 'autoformat)
