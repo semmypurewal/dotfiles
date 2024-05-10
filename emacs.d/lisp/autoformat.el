@@ -24,17 +24,18 @@
 (defun run-shell-commands-on-buffer (cmds)
   "Run a sequence of shell commands on a buffer and return t on
    success, nil on failure."
-  (let ((temp-file (create-temp-file-in-default-directory)))
-    (write-region (point-min) (point-max) temp-file)
-    (if (run-shell-commands-on-file cmds temp-file)
-        (progn
-          (erase-buffer)
-          (insert-file-contents temp-file)
-          (delete-file temp-file)
-          t)
-      (progn
-        (delete-file temp-file)
-        nil))))
+  (let ((temp-file (create-temp-file-in-default-directory))
+        (original-point (point)))
+    (write-region (point-min) (point-max) temp-file nil 'silent)
+    (unwind-protect
+        (if (run-shell-commands-on-file cmds temp-file)
+            (progn
+              (erase-buffer)
+              (insert-file-contents temp-file)
+              (goto-char (min original-point (point-max)))
+              t)
+          nil)
+      (delete-file temp-file))))
 
 (defun python-format-buffer ()
   "Run black and isort on the current buffer"
