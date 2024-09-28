@@ -1,3 +1,16 @@
+(defun line-length ()
+  "Return the length of the current line."
+  (save-excursion (end-of-line) (current-column)))
+
+(defun move-to-line-and-col (line col)
+  "Move to the specified line and column if it exists.
+
+If the line exists, but it's not long-enough, move to the specified
+line and the last column in that line. If the line does not exist,
+move to point-max."
+  (goto-line line)
+  (if (> col (line-length)) (end-of-line) (move-to-column col)))
+
 (defun create-temp-file-in-default-directory ()
   "Create a temporary file in the default directory"
   (let ((temp-file (make-temp-file "autoformat-" nil ".tmp")))
