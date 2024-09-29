@@ -1,13 +1,18 @@
 (defun create-temp-file-in-default-directory ()
   "Create a temporary file in the default directory"
-  (let ((temp-file (make-temp-file "temp" nil ".tmp")))
+  (let ((temp-file (make-temp-file "autoformat-" nil ".tmp")))
     (let ((new-path (expand-file-name (file-name-nondirectory temp-file) default-directory)))
       (rename-file temp-file new-path)
+      (message "Created temp file '%s'" new-path)
       new-path)))
 
 (defun run-shell-command-on-file (cmd file)
   "Run shell command on file and return t on success, nil on failure"
-  (eq (shell-command (concat cmd " " file)) 0))
+  (let ((full-command (concat cmd " " file)))
+    (message "Attempting to run '%s'" full-command)
+    (let ((result (shell-command full-command)))
+      (message "result: %s" result)
+      (eq result 0))))
 
 (defun run-shell-commands-on-file (cmds file)
   "Run a sequence of shell commands on a file and return t on success,
