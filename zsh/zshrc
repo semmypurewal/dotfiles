@@ -38,3 +38,8 @@ fi
 zstyle ':completion:*:*:git:*' script $DOTFILES_PATH/zsh/git-completion.bash
 fpath=($DOTFILES_PATH/zsh $fpath)
 autoload -Uz compinit && compinit
+
+# read zshenv
+if [ -f ~/.zshenv ]; then
+  source ~/.zshenv
+fi
