@@ -39,6 +39,9 @@ zstyle ':completion:*:*:git:*' script $DOTFILES_PATH/zsh/git-completion.bash
 fpath=($DOTFILES_PATH/zsh $fpath)
 autoload -Uz compinit && compinit
 
+# sapling autocompletion
+source $DOTFILES_PATH/zsh/sl-completion.zsh
+
 # read zshenv
 if [ -f ~/.zshenv ]; then
   source ~/.zshenv
