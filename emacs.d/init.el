@@ -68,6 +68,7 @@
 
   ;; npm install -g typescript-language-server typescript
   (add-to-list 'eglot-server-programs '(web-js-mode . ("typescript-language-server" "--stdio")))
+  (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer")))
 
   :hook
   (web-js-mode . eglot-ensure)
@@ -76,6 +77,7 @@
   (c-mode . eglot-ensure)
   (c++-mode . eglot-ensure)
   (python-mode . eglot-ensure)
+  (rust-mode . eglot-ensure)
 
   :ensure t)
 
@@ -104,6 +106,10 @@
    ("\\.html" . web-html-mode)
    ("\\.css" . web-css-mode))
 
+  :ensure t)
+
+(use-package rust-mode
+  :mode "\\.rs"
   :ensure t)
 
 ;; Autoformatters
