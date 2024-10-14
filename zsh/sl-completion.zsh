@@ -5,7 +5,7 @@ _sl_complete() {
     # Define a list of sl subcommands
     local -a subcommands
     subcommands=(
-        "clone" "log" "rebase" "checkout" "pull" "pr" "branch" "histedit"
+        "clone" "log" "rebase" "checkout" "co" "pull" "pr" "branch" "histedit"
     )
 
     # Handle autocompletion
@@ -41,7 +41,7 @@ _sl_complete() {
                     # If neither -s nor -d is the last argument, suggest the options
                     compadd -s -d
                 fi
-            elif [[ "$subcommand" == "checkout" || "$subcommand" == "histedit" || "$subcommand" == "pull" ]]; then
+            elif [[ "$subcommand" == "checkout" || "$subcommand" == "co" || "$subcommand" == "histedit" || "$subcommand" == "pull" ]]; then
                 # Autocomplete SHAs for other subcommands
                 local shas=($(sl log --all --limit 100 --template '{node|short}\n'))
                 compadd $shas
