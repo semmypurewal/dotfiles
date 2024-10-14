@@ -55,6 +55,7 @@
 (use-package project
   :config
   (setq project-switch-commands 'project-find-file)
+  (add-to-list 'project-vc-extra-root-markers ".sl")
 
   :bind
   (("C-x C-j" . project-find-file)))
@@ -153,3 +154,4 @@
   ("\\.vert" . glsl-mode)
   ("\\.frag" . glsl-mode)
   :ensure t)
+
