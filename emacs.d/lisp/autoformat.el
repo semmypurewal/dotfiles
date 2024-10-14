@@ -30,6 +30,15 @@
   "Return the length of the current line."
   (save-excursion (end-of-line) (current-column)))
 
+(defun get-current-center-line ()
+  (let* ((window-midpoint (/ (window-body-height) 2))
+         (center-line (line-number-at-pos (window-start) t)))
+    (+ center-line window-midpoint)))
+
+(defun restore-center-line (center-line)
+  (goto-line center-line)
+  (recenter))
+
 (defun move-to-line-and-col (line col)
   "Move to the specified line and column if it exists.
 
@@ -124,10 +133,11 @@ move to point-max."
                         (message "Line not found, word not found. Falling back to original line and column")
                         (move-to-line-and-col line col)))))))))))))
 
-
 (defun run-shell-commands-on-buffer-and-restore-point (cmds)
-  (restore-point-after #'run-shell-commands-on-buffer cmds))
-
+  (let ((center-line (get-current-center-line)))
+    (restore-point-after #'run-shell-commands-on-buffer cmds)
+    (save-excursion
+      (restore-center-line center-line))))
 
 (defun python-format-buffer ()
   "Run black and isort on the current buffer"
