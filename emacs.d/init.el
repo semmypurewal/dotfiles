@@ -70,6 +70,7 @@
   ;; npm install -g typescript-language-server typescript
   (add-to-list 'eglot-server-programs '(web-js-mode . ("typescript-language-server" "--stdio")))
   (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer")))
+  (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
 
   :hook
   (web-js-mode . eglot-ensure)
@@ -124,6 +125,12 @@
                (lambda ()
                  (add-hook 'before-save-hook
                            #'cpp-format-buffer nil t)))
+
+  (rust-mode .
+               (lambda ()
+                 (add-hook 'before-save-hook
+                           #'rust-format-buffer nil t)))
+
   (web-js-mode .
                (lambda ()
                  (add-hook 'before-save-hook
