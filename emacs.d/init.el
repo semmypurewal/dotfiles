@@ -114,6 +114,13 @@
   :mode "\\.rs"
   :ensure t)
 
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook
+                      (lambda ()
+                        (indent-region (point-min) (point-max)))
+                      nil t)))
+
 ;; Autoformatters
 (use-package autoformat
   :hook
@@ -122,14 +129,14 @@
                  (add-hook 'before-save-hook
                            #'python-format-buffer nil t)))
   (c-mode-common .
-               (lambda ()
-                 (add-hook 'before-save-hook
-                           #'cpp-format-buffer nil t)))
+                 (lambda ()
+                   (add-hook 'before-save-hook
+                             #'cpp-format-buffer nil t)))
 
   (rust-mode .
-               (lambda ()
-                 (add-hook 'before-save-hook
-                           #'rust-format-buffer nil t)))
+             (lambda ()
+               (add-hook 'before-save-hook
+                         #'rust-format-buffer nil t)))
 
   (web-js-mode .
                (lambda ()
