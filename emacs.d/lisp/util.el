@@ -87,18 +87,26 @@ move to point-max."
 (defun run-shell-commands-on-buffer (cmds)
   "Run a sequence of shell commands on a buffer and return t on
    success, nil on failure."
-  (let* ((temp-file (create-temp-file-in-default-directory)))
+  (let* ((temp-file (create-temp-file-in-default-directory))
+         result)  ;; Declare a result variable to capture the success/failure
     (write-region (point-min) (point-max) temp-file nil 'silent)
     (unwind-protect
-        (if (run-shell-commands-on-file cmds temp-file)
-            (progn
-              (erase-buffer)
-              (insert-file-contents temp-file)
-              t)
-          nil)
-      (delete-file temp-file))))
+        (setq result
+              (if (run-shell-commands-on-file cmds temp-file)
+                  (progn
+                    (erase-buffer)
+                    (insert-file-contents temp-file)
+                    t)  ;; return success
+                nil))  ;; return failure
+      ;; Always delete the temp file, even if an error occurs
+      (delete-file temp-file))
+
+    ;; Explicitly return the result
+    result))
 
 (defun restore-point-after (func &rest args)
+  "Execute the input FUNC which may modify the buffer, and then
+   attempt to restore the point using some straightforward heuristics."
   (let* ((line (+ (current-line) 1))
          (col (current-column))
          (pre-to-point (text-to-point))
@@ -134,9 +142,12 @@ move to point-max."
                         (move-to-line-and-col line col)))))))))))))
 
 (defun run-shell-commands-on-buffer-and-restore-point (cmds)
-  (let ((center-line (get-current-center-line)))
-    (restore-point-after #'run-shell-commands-on-buffer cmds)
+  "Run shell commands on the buffer, restore the point and return the result."
+  (let ((center-line (get-current-center-line))
+        result)  ;; Declare a variable to store the result
+    (setq result (restore-point-after #'run-shell-commands-on-buffer cmds))  ;; Capture the result of the shell commands
     (save-excursion
-      (restore-center-line center-line))))
+      (restore-center-line center-line))
+    result))
 
 (provide 'util)
