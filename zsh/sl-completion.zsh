@@ -5,7 +5,7 @@ _sl_complete() {
     # Define a list of sl subcommands
     local -a subcommands
     subcommands=(
-        "clone" "log" "rebase" "checkout" "co" "pull" "pr" "branch" "histedit"
+        "clone" "log" "rebase" "revert" "checkout" "co" "pull" "pr" "branch" "histedit"
     )
 
     # Handle autocompletion
@@ -23,14 +23,9 @@ _sl_complete() {
             local command=${words[1]}
             local subcommand=${words[2]}
 
+
             # Determine the last non-empty argument
-            local last_arg
-            if [[ -z ${words[-1]} ]]; then
-                # If the last word is an empty string (space at the end), check the previous word
-                last_arg=${words[-2]}
-            else
-                last_arg=${words[-1]}
-            fi
+            local last_arg=${words[CURRENT-1]}
 
             if [[ "$subcommand" == "rebase" ]]; then
                 # If the last argument is -s or -d, autocomplete the SHA
@@ -45,6 +40,9 @@ _sl_complete() {
                 # Autocomplete SHAs for other subcommands
                 local shas=($(sl log --all --limit 100 --template '{node|short}\n'))
                 compadd $shas
+            elif [[ "$subcommand" == "revert" ]]; then
+                local files=($(sl status --no-status))
+                compadd $files
             fi
             ;;
     esac
