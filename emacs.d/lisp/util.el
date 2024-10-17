@@ -65,8 +65,12 @@ move to point-max."
       new-path)))
 
 (defun run-shell-command-on-file (cmd file)
-  "Run shell command on file and return t on success, nil on failure"
-  (let ((full-command (concat cmd " " file)))
+  "Run shell command on file and return t on success, nil on failure.
+   If CMD contains the '$file' placeholder, it will be replaced with the FILE path.
+   Otherwise, the FILE path will be appended to CMD."
+  (let ((full-command (if (string-match-p "\\$file" cmd)
+                          (replace-regexp-in-string "\\$file" file cmd)
+                        (concat cmd " " file))))
     (message "Attempting to run '%s'" full-command)
     (let ((result (shell-command full-command)))
       (message "result: %s" result)
@@ -84,29 +88,45 @@ move to point-max."
             result)))
     t))
 
-(defun run-shell-commands-on-buffer (cmds)
-  "Run a sequence of shell commands on a buffer and return t on
-   success, nil on failure."
+(defun run-shell-commands-on-region (cmds &optional reformat entire-buffer)
+  "Run a sequence of shell commands on the selected region, or the whole
+   buffer if ENTIRE-BUFFER is set to t.
+   Return t on success, nil on failure.
+   If REFORMAT is true, the region is erased and replaced with the command's output.
+   The region is restored if it was active before the operation."
   (let* ((temp-file (create-temp-file-in-default-directory))
+         ;; If entire-buffer is t, use the entire buffer
+         (region-active (and (use-region-p) (not entire-buffer)))
+         (region-min (if region-active (region-beginning) (point-min)))
+         (region-max (if region-active (region-end) (point-max)))
+         (reformat (if (null reformat) reformat t))
          result)  ;; Declare a result variable to capture the success/failure
-    (write-region (point-min) (point-max) temp-file nil 'silent)
+
+    ;; Write the selected region (or whole buffer) to a temp file
+    (write-region region-min region-max temp-file nil 'silent)
     (unwind-protect
         (setq result
               (if (run-shell-commands-on-file cmds temp-file)
                   (progn
-                    (erase-buffer)
-                    (insert-file-contents temp-file)
+                    ;; Only erase and reformat the region if reformat is true
+                    (when reformat
+                      (delete-region region-min region-max)
+                      (goto-char region-min)
+                      (insert-file-contents temp-file))
                     t)  ;; return success
                 nil))  ;; return failure
       ;; Always delete the temp file, even if an error occurs
       (delete-file temp-file))
 
+    ;; Only restore the region if it was active before the operation
+    (when (and region-active (not (equal region-min region-max)))
+      (goto-char region-max))
+
     ;; Explicitly return the result
     result))
 
 (defun restore-point-after (func &rest args)
-  "Execute the input FUNC which may modify the buffer, and then
-   attempt to restore the point using some straightforward heuristics."
+  "Execute the input FUNC which may modify the buffer, and then attempt to restore the point using some straightforward heuristics."
   (let* ((line (+ (current-line) 1))
          (col (current-column))
          (pre-to-point (text-to-point))
@@ -145,9 +165,10 @@ move to point-max."
   "Run shell commands on the buffer, restore the point and return the result."
   (let ((center-line (get-current-center-line))
         result)  ;; Declare a variable to store the result
-    (setq result (restore-point-after #'run-shell-commands-on-buffer cmds))  ;; Capture the result of the shell commands
+    (setq result (restore-point-after #'run-shell-commands-on-region cmds t t))
     (save-excursion
       (restore-center-line center-line))
     result))
+
 
 (provide 'util)
