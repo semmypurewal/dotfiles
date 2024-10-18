@@ -143,6 +143,10 @@
                  (add-hook 'before-save-hook
                            #'js-format-buffer nil t))))
 
+(use-package pbcopy
+  :config
+  (global-set-key (kbd "M-w") 'kill-ring-save-pbcopy)
+  (global-set-key (kbd "C-w") 'kill-region-pbcopy))
 
 ;; C/C++
 (c-add-style "my-c-style" '((c-tab-always-indent . t)
