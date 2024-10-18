@@ -141,7 +141,13 @@
   (web-js-mode .
                (lambda ()
                  (add-hook 'before-save-hook
-                           #'js-format-buffer nil t))))
+                           #'js-format-buffer nil t)))
+
+  (yaml-mode .
+             (lambda ()
+               (add-hook 'before-save-hook
+                         #'yaml-format-buffer nil t)))
+  )
 
 (use-package pbcopy
   :config

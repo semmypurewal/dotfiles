@@ -22,4 +22,11 @@
       (message "js-autoformat: success")
     (message "js-autoformat: failed")))
 
+(defun yaml-format-buffer ()
+  "Run prettier on the current buffer"
+  (interactive)
+  (if (run-shell-commands-on-buffer-and-restore-point '("prettier -w --parser yaml"))
+      (message "yaml-autoformat: success")
+    (message "yaml-autoformat: failed")))
+
 (provide 'autoformat)
