@@ -127,7 +127,7 @@ move to point-max."
 
 (defun restore-point-after (func &rest args)
   "Execute the input FUNC which may modify the buffer, and then attempt to restore the point using some straightforward heuristics."
-  (let* ((line (+ (current-line) 1))
+  (let* ((line (line-number-at-pos))
          (col (current-column))
          (pre-to-point (text-to-point))
          (line-at-point (get-text-of-line line))
