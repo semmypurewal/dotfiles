@@ -46,3 +46,8 @@ source $DOTFILES_PATH/zsh/sl-completion.zsh
 if [ -f ~/.zshenv ]; then
   source ~/.zshenv
 fi
+
+# read .env
+if [ -f ~/.env ]; then
+   source ~/.env
+fi
