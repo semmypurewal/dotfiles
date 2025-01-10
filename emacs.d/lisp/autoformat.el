@@ -13,20 +13,20 @@
   (interactive)
   (if (run-shell-commands-on-buffer-and-restore-point '("clang-format -i"))
       (message "cpp-autoformat: success")
-    (message "cpp-autoformat: failed")))
+    (error "cpp-autoformat: failed")))
 
 (defun js-format-buffer ()
   "Run prettier on the current buffer"
   (interactive)
   (if (run-shell-commands-on-buffer-and-restore-point '("prettier -w --parser typescript"))
       (message "js-autoformat: success")
-    (message "js-autoformat: failed")))
+    (error "js-autoformat: failed")))
 
 (defun yaml-format-buffer ()
   "Run prettier on the current buffer"
   (interactive)
   (if (run-shell-commands-on-buffer-and-restore-point '("prettier -w --parser yaml"))
       (message "yaml-autoformat: success")
-    (message "yaml-autoformat: failed")))
+    (error "yaml-autoformat: failed")))
 
 (provide 'autoformat)

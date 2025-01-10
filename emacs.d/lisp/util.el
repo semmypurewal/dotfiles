@@ -84,7 +84,7 @@ move to point-max."
         (if result
             (run-shell-commands-on-file (cdr cmds) file)
           (progn
-            (message "%s failed on buffer" (car cmds))
+            (message "'%s' failed on buffer" (car cmds))
             result)))
     t))
 
@@ -133,38 +133,40 @@ move to point-max."
          (line-at-point (get-text-of-line line))
          (word-at-point (get-word-at-point)))
     (progn
-      (apply func args)
-      (move-to-line-and-col line col)
-      (let* ((post-to-point (text-to-point)))
-        (if (string= pre-to-point post-to-point)
-            (message "No change up to point, leave it where it is.")
+      (let ((result (apply func args)))
+        (if (not result)
+            nil
           (progn
-            (message "Change before point, searching for line '%s'." line-at-point)
-            (let* ((line-pos (search-nearest line-at-point)))
-              (if line-pos
-                  (progn
-                    (message "found '%s' at char %s, restoring point." line-at-point line-pos)
-                    (message "going to line %s" line-pos)
-                    (goto-char line-pos)
-                    (message "goint to beginning of line plus col")
-                    (goto-char (+ (line-beginning-position) col)))
-                ;; (goto-char (+ line-pos col)))
+            (move-to-line-and-col line col)
+            (let* ((post-to-point (text-to-point)))
+              (if (string= pre-to-point post-to-point)
+                  (message "No change up to point, leave it where it is.")
                 (progn
-                  (message "'%s' not in buffer, trying word '%s' instead" line-at-point word-at-point)
-                  (let* ((word-pos (search-nearest word-at-point)))
-                    (message "word-pos: %s" word-pos)
-                    (if word-pos
+                  (message "Change before point, searching for line '%s'." line-at-point)
+                  (let* ((line-pos (search-nearest line-at-point)))
+                    (if line-pos
                         (progn
-                          (message "found '%s' at char %s, restoring point." word-at-point word-pos)
-                          (goto-char word-pos))
+                          (message "found '%s' at char %s, restoring point." line-at-point line-pos)
+                          (message "going to line %s" line-pos)
+                          (goto-char line-pos)
+                          (message "going to beginning of line plus col")
+                          (goto-char (+ (line-beginning-position) col)))
                       (progn
-                        (message "Line not found, word not found. Falling back to original line and column")
-                        (move-to-line-and-col line col)))))))))))))
+                        (message "'%s' not in buffer, trying word '%s' instead" line-at-point word-at-point)
+                        (let* ((word-pos (search-nearest word-at-point)))
+                          (message "word-pos: %s" word-pos)
+                          (if word-pos
+                              (progn
+                                (message "Found '%s' at char %s, restoring point." word-at-point word-pos)
+                                (goto-char word-pos))
+                            (progn
+                              (message "Line not found, word not found. Falling back to original line and column")
+                              (move-to-line-and-col line col))))))))))))))))
 
 (defun run-shell-commands-on-buffer-and-restore-point (cmds)
   "Run shell commands on the buffer, restore the point and return the result."
   (let ((center-line (get-current-center-line))
-        result)  ;; Declare a variable to store the result
+        result)
     (setq result (restore-point-after #'run-shell-commands-on-region cmds t t))
     (save-excursion
       (restore-center-line center-line))
