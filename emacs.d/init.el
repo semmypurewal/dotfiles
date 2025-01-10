@@ -20,7 +20,6 @@
   (setq dired-use-ls-dired nil))
 
 ;; General UI config
-(load-theme 'zenburn)
 (display-time)
 (column-number-mode t)
 (global-auto-revert-mode t)
@@ -55,19 +54,11 @@
 (use-package project
   :config
   (setq project-switch-commands 'project-find-file)
-  (add-to-list 'project-vc-extra-root-markers ".sl")
-
-  :bind
-  (("C-x C-j" . project-find-file)))
+  (add-to-list 'project-vc-extra-root-markers ".sl"))
 
 ;; IDE Stuff
 (use-package eglot
   :config
-  ;; npm install -g vscode-langservers-extracted
-  ;; (add-to-list 'eglot-server-programs '(web-html-mode . ("vscode-html-language-server" "--stdio")))
-  ;; (add-to-list 'eglot-server-programs '(web-css-mode . ("vscode-css-language-server" "--stdio")))
-
-  ;; npm install -g typescript-language-server typescript
   (add-to-list 'eglot-server-programs '(web-js-mode . ("typescript-language-server" "--stdio")))
   (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer")))
   (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
