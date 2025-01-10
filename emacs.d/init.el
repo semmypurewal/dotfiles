@@ -46,6 +46,15 @@
 
 (fido-vertical-mode 1)
 
+(use-package emacs
+  :hook
+  (emacs-lisp-mode .
+                   (lambda ()
+                     (add-hook 'before-save-hook
+                               (lambda ()
+                                 (indent-region (point-min) (point-max)))
+                               nil t))))
+
 (use-package basics
   :bind
   (("C-c q" . 'close-and-kill-this-pane))
@@ -105,13 +114,6 @@
   :mode "\\.rs"
   :ensure t)
 
-(add-hook 'emacs-lisp-mode-hook
-          (lambda ()
-            (add-hook 'before-save-hook
-                      (lambda ()
-                        (indent-region (point-min) (point-max)))
-                      nil t)))
-
 ;; Autoformatters
 (use-package autoformat
   :hook
@@ -145,16 +147,18 @@
   (global-set-key (kbd "M-w") 'kill-ring-save-pbcopy)
   (global-set-key (kbd "C-w") 'kill-region-pbcopy))
 
-;; C/C++
-(c-add-style "my-c-style" '((c-tab-always-indent . t)
-                            (c-basic-offset . 4)
-                            (c-offsets-alist (access-label . -2)
-                                             (label . +))))
-(setq c-default-style "my-c-style")
+(use-package cc-mode
+  :init
+  (setq c-default-style "my-c-style")
 
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (local-set-key (kbd "C-x C-k") 'ff-get-other-file)))
+  :config
+  (c-add-style "my-c-style" '((c-tab-always-indent . t)
+                              (c-basic-offset . 4)
+                              (c-offsets-alist . ((access-label . -2)
+                                                  (label . +)))))
+  (add-hook 'c-mode-common-hook
+            (lambda ()
+              (local-set-key (kbd "C-x C-k") 'ff-get-other-file))))
 
 
 ;; Misc
