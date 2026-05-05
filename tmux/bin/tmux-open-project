@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+project="$(
+  find "$HOME/src" -maxdepth 3 -type d -name .git 2>/dev/null |
+    sed 's#/.git$##' |
+    sort |
+    fzf
+)"
+
+[ -z "$project" ] && exit 0
+
+name="$(basename "$project")"
+tmux new-window -c "$project" -n "$name" "emacs -nw ."
+tmux split-window -h -c "$project"
+tmux split-window -v -p 33 -c "$project" "ai"
+tmux select-pane -U
+tmux split-window -v -p 50 -c "$project"
+tmux select-pane -L

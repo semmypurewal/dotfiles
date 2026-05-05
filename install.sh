@@ -37,3 +37,6 @@ soft-link $SELF_DIR/emacs.d $HOME/.emacs.d
 soft-link $SELF_DIR/tmux/tmux.conf $HOME/.tmux.conf
 soft-link $SELF_DIR/zsh/zshrc $HOME/.zshrc
 soft-link $SELF_DIR/docker $HOME/.docker
+
+soft-link $SELF_DIR/tmux/bin/tmux-open-project $HOME/bin/
+soft-link $SELF_DIR/tmux/bin/tmux-select-window $HOME/bin/
