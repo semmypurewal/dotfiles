@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+window="${1:-$(tmux display-message -p '#{window_id}')}"
+
+pane_by_title() {
+  tmux list-panes -t "$window" -F '#{pane_id}	#{pane_title}' |
+    awk -F '\t' -v title="$1" '$2 == title { print $1; exit }'
+}
+
+editor="$(pane_by_title "editor")"
+term1="$(pane_by_title "term 1")"
+term2="$(pane_by_title "term 2")"
+ai="$(pane_by_title "ai container")"
+
+if [ -z "$editor" ] || [ -z "$term1" ] || [ -z "$term2" ] || [ -z "$ai" ]; then
+  echo "Missing one or more panes: editor, term 1, term 2, ai container" >&2
+  exit 1
+fi
+
+tmux list-panes -t "$window" -F '#{pane_id}' |
+  while read -r pane; do
+    case "$pane" in
+      "$editor"|"$term1"|"$term2"|"$ai") ;;
+      *) tmux kill-pane -t "$pane" ;;
+    esac
+  done
+
+width="$(tmux display-message -p -t "$window" '#{window_width}')"
+main_width="$((width / 2))"
+
+tmux select-pane -t "$editor"
+tmux set-window-option -t "$window" main-pane-width "$main_width"
+tmux select-layout -t "$window" main-vertical
+tmux select-pane -t "$editor"
