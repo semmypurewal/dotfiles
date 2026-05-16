@@ -1,92 +1,51 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+opened_only=false
+[[ "${1:-}" == "--opened" ]] && opened_only=true
+
+src="$HOME/src"
+session_prefix="$(tmux display-message -p '#S')-"
+open_windows="$(tmux list-windows -F '#W' 2>/dev/null || true)"
+
+items=()
+
+for gitdir in "$src"/*/.git; do
+  [[ -d "$gitdir" ]] || continue
+
+  path="${gitdir%/.git}"
+  name="${path##*/}"
+  window_name="${session_prefix}${name}"
+
+  if [[ $'\n'"$open_windows"$'\n' == *$'\n'"$window_name"$'\n'* ]]; then
+    items+=("* $path")
+  elif [[ "$opened_only" == false ]]; then
+    items+=("  $path")
+  fi
+done
+
 project="$(
-  find "$HOME/src" -maxdepth 3 -type d -name .git 2>/dev/null |
-    sed 's#/.git$##' |
-    sort |
-    fzf
+  printf '%s\n' "${items[@]}" |
+    sort -r |
+    fzf --no-sort
 )"
 
-[ -z "$project" ] && exit 0
+[[ -z "$project" ]] && exit 0
 
-session="$(tmux display-message -p '#S')"
-project_name="$(basename "$project")"
-window_name="${session}-${project_name}"
+project="${project:2}"
+name="${project##*/}"
+window_name="${session_prefix}${name}"
 
-# If this window already exists in the current session, switch to it.
-if tmux list-windows -F '#W' | grep -Fxq "$window_name"; then
+if [[ $'\n'"$open_windows"$'\n' == *$'\n'"$window_name"$'\n'* ]]; then
   tmux select-window -t "$window_name"
   exit 0
 fi
 
-# Create editor pane
 tmux new-window -c "$project" -n "$window_name" "emacs -nw ."
-tmux select-pane -T "editor"
 
-# Create top-right pane
 tmux split-window -h -c "$project"
-tmux select-pane -T "term 1"
-
-# Create bottom-right pane
-tmux split-window -v -p 33 -c "$project" "ai"
-tmux select-pane -T "ai container"
-
-# Create middle-right pane
+tmux split-window -v -c "$project" "ai"
 tmux select-pane -U
-tmux split-window -v -p 50 -c "$project"
-tmux select-pane -T "term 2"
+tmux split-window -v -c "$project"
 
-# Return focus to editor
 tmux select-pane -L
-
-# #!/usr/bin/env bash
-# set -euo pipefail
-
-# project="$(
-#   find "$HOME/src" -maxdepth 3 -type d -name .git 2>/dev/null |
-#     sed 's#/.git$##' |
-#     sort |
-#     fzf
-# )"
-
-# [ -z "$project" ] && exit 0
-
-# session="$(tmux display-message -p '#S')"
-# project_name="$(basename "$project")"
-# window_name="${session}-${project_name}"
-
-# # If this window already exists in the current session, switch to it.
-# if tmux list-windows -F '#W' | grep -Fxq "$window_name"; then
-#   tmux select-window -t "$window_name"
-#   exit 0
-# fi
-
-# # Otherwise create it.
-# tmux new-window -c "$project" -n "$window_name" "emacs -nw ."
-# tmux split-window -h -c "$project"
-# tmux split-window -v -p 33 -c "$project" "ai"
-# tmux select-pane -U
-# tmux split-window -v -p 50 -c "$project"
-# tmux select-pane -L
-
-
-# #!/usr/bin/env bash
-# set -euo pipefail
-
-# project="$(
-#   find "$HOME/src" -maxdepth 3 -type d -name .git 2>/dev/null |
-#     sed 's#/.git$##' |
-#     sort |
-#     fzf
-# )"
-
-# [ -z "$project" ] && exit 0
-
-# name="$(basename "$project")"
-# tmux new-window -c "$project" -n "$name" "emacs -nw ."
-# tmux split-window -h -c "$project"
-# tmux split-window -v -p 33 -c "$project" "ai"
-# tmux select-pane -U
-# tmux split-window -v -p 50 -c "$project"
-# tmux select-pane -L
